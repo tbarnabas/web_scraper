@@ -1,4 +1,4 @@
 web_scraper
 ===========
 
-web scraper (multithread - Windows) 
+web scraper (multithreaded - C++, Windows) 
