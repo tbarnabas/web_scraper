@@ -18,6 +18,11 @@ SOURCES = \
   base_ctime.cpp \
   base_eexception.cpp \
   \
+  datastructure.cpp \
+  datastructure_crawstream.cpp \
+  datastructure_cstream.cpp \
+  datastructure_ctextstream.cpp \
+  \
   thread.cpp \
   thread_ccondition.cpp \
   thread_cguard.cpp \

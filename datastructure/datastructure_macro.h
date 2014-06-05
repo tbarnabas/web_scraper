@@ -1,23 +1,19 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// wsr_include.h - include header
+// datastructure_macro.h - macro header
 // --------------------------------------------------------------------------
 //
-// WEB SCRAPER
+// DATASTRUCTURE
 //
-// INCLUDE
+// MACRO
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#ifndef _WSR_INCLUDE
-#define _WSR_INCLUDE
+#ifndef _DATASTRUCTURE_MACRO
+#define _DATASTRUCTURE_MACRO
 
-#include "wsr_platform.h"
+#include "datastructure_platform.h"
 
-#include "base/base.h"
-#include "datastructure/datastructure.h"
-#include "thread/thread.h"
-
-#endif // #ifndef _WSR_INCLUDE
+#endif // #ifndef _DATASTRUCTURE_MACRO

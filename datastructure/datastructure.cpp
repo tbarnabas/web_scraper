@@ -1,47 +1,44 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// wsr.cpp - module source
+// datastructure.cpp - module source
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#include "wsr.h"
+#include "datastructure.h"
 
-namespace WSR {
+namespace DATASTRUCTURE {
 
-T_BOOLEAN GLOBAL_bCreated = false;
-T_BOOLEAN GLOBAL_bInitialized = false;
+T_ULONG GLOBAL_uCreated = 0;
+T_ULONG GLOBAL_uInitialized = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 void Create() {
-  if (GLOBAL_bCreated == false) {
+  if (GLOBAL_uCreated == 0) {
     ::BASE::Create();
     ::THREAD::Create();
-    ::DATASTRUCTURE::Create();
-    GLOBAL_bCreated = true;
   }
+  GLOBAL_uCreated = GLOBAL_uCreated + 1;
 } // Create
 
 
 /////////////////////////////////////////////////////////////////////////////
 void Initialize() {
   Create();
-  if (GLOBAL_bInitialized == false)  {
+  if (GLOBAL_uInitialized == 0) {
     ::BASE::Initialize();
     ::THREAD::Initialize();
-    ::DATASTRUCTURE::Initialize();
-    GLOBAL_bInitialized = true;
   }
+  GLOBAL_uInitialized = GLOBAL_uInitialized + 1;
 } // Initialize
 
 
 /////////////////////////////////////////////////////////////////////////////
 void Shutdown(T_BOOLEAN bImmediate) {
-  if (GLOBAL_bInitialized == true)  {
-    ::DATASTRUCTURE::Shutdown(bImmediate);
+  GLOBAL_uInitialized = GLOBAL_uInitialized - 1;
+  if (GLOBAL_uInitialized == 0) {
     ::THREAD::Shutdown(bImmediate);
     ::BASE::Shutdown(bImmediate);
-    GLOBAL_bInitialized = false;
   }
 } // Shutdown
 
@@ -49,12 +46,11 @@ void Shutdown(T_BOOLEAN bImmediate) {
 /////////////////////////////////////////////////////////////////////////////
 void Destroy() {
   Shutdown(true);
-  if (GLOBAL_bCreated == true)  {
-    ::DATASTRUCTURE::Destroy();
+  GLOBAL_uCreated = GLOBAL_uCreated - 1;
+  if (GLOBAL_uCreated == 0) {
     ::THREAD::Destroy();
     ::BASE::Destroy();
-    GLOBAL_bCreated = false;
   }
 } // Destroy
 
-} // namespace WSR
+} // namespace DATASTRUCTURE
