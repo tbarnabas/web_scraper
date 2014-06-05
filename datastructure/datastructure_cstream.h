@@ -22,7 +22,7 @@ namespace DATASTRUCTURE {
 DERIVE_ABSTRACT_EXCEPTION(::DATASTRUCTURE::EQueue, EStream);
 
 class CStream :
-  public ::DATASTRUCTURE::CQueue<REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > > {
+  public ::DATASTRUCTURE::CQueue<REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > > {
 public:
   //! constructor
   CStream();
@@ -79,7 +79,7 @@ public:
   // virtual CStream & operator<<(const T_TIME & tValue) = 0;
 
   //! write
-  virtual REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > Write() = 0;
+  virtual REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > Write() = 0;
 }; // class CStream
 
 } // namespace DATASTRUCTURE

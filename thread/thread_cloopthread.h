@@ -38,7 +38,7 @@ protected:
 
 public:
   //! constructor
-  CLoopThread(::BASE::CObject::synchronizations synchronizations = ::BASE::CObject::NON_BLOCKED, const T_TIME & tTimeOut = T_TIME());
+  CLoopThread(::BASE::CObject::synchronizations synchronization = ::BASE::CObject::NON_BLOCKED, const T_TIME & tTimeOut = T_TIME());
   //! destructor
   virtual ~CLoopThread();
 

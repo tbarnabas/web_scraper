@@ -41,7 +41,7 @@ CRawStream & CRawStream::operator<<(::DATASTRUCTURE::CArray<T_BYTE> * pArray) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_BOOLEAN bValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&bValue, sizeof(T_BOOLEAN)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -52,7 +52,7 @@ CRawStream & CRawStream::operator<<(T_BOOLEAN bValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_INT8 iValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&iValue, sizeof(T_INT8)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -63,7 +63,7 @@ CRawStream & CRawStream::operator<<(T_INT8 iValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_UINT8 uValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&uValue, sizeof(T_UINT8)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -74,7 +74,7 @@ CRawStream & CRawStream::operator<<(T_UINT8 uValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_INT16 iValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&iValue, sizeof(T_INT16)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -85,7 +85,7 @@ CRawStream & CRawStream::operator<<(T_INT16 iValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_UINT16 uValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&uValue, sizeof(T_UINT16)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -96,7 +96,7 @@ CRawStream & CRawStream::operator<<(T_UINT16 uValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_INT32 iValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&iValue, sizeof(T_INT32)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -107,7 +107,7 @@ CRawStream & CRawStream::operator<<(T_INT32 iValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_UINT32 uValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&uValue, sizeof(T_UINT32)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -118,7 +118,7 @@ CRawStream & CRawStream::operator<<(T_UINT32 uValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_FLOAT fValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&fValue, sizeof(T_FLOAT)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -129,7 +129,7 @@ CRawStream & CRawStream::operator<<(T_FLOAT fValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(T_DOUBLE dValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)&dValue, sizeof(T_DOUBLE)));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -146,7 +146,7 @@ CRawStream & CRawStream::operator<<(const T_CHAR * pValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CRawStream & CRawStream::operator<<(const T_STRING & sValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)C_STR(sValue), sValue.GetLength() + 1));
   ::DATASTRUCTURE::CStream::operator<<(tElement);
@@ -156,14 +156,13 @@ CRawStream & CRawStream::operator<<(const T_STRING & sValue) {
 
 
 /////////////////////////////////////////////////////////////////////////////
-REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > CRawStream::Write() {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tResult;
+REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > CRawStream::Write() {
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tResult;
 
   if (::DATASTRUCTURE::CStream::GetSize() > 0) {
-    REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+    REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
     T_ULONG uTotalSize = 0;
-    T_ULONG uSize = ::DATASTRUCTURE::CStream::GetSize();
     for (::DATASTRUCTURE::CStream::iterator i = ::DATASTRUCTURE::CStream::Begin(); i != ::DATASTRUCTURE::CStream::End(); i++) {
       (* this) << (T_DWORD)(i->GetSize());
       (* this) << (* i);

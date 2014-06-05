@@ -88,7 +88,7 @@ void CStack<T>::Push(const T & tElement) {
 /////////////////////////////////////////////////////////////////////////////
 template <class T>
 T CStack<T>::Pop() {
-  return (Erase(0));
+  return (::DATASTRUCTURE::CList<T>::Erase(0));
 } // Pop
 
 } // namespace DATASTRUCTURE

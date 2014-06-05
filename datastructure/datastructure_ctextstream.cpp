@@ -101,7 +101,7 @@ CTextStream & CTextStream::operator<<(const T_CHAR * pValue) {
 
 /////////////////////////////////////////////////////////////////////////////
 CTextStream & CTextStream::operator<<(const T_STRING & sValue) {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement;
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement;
 
   tElement.Create(new ::DATASTRUCTURE::CArray<T_BYTE>((T_BYTE *)C_STR(sValue), sValue.GetLength()));
   ::DATASTRUCTURE::CStream::Push(tElement);
@@ -111,8 +111,8 @@ CTextStream & CTextStream::operator<<(const T_STRING & sValue) {
 
 
 /////////////////////////////////////////////////////////////////////////////
-REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > CTextStream::Write() {
-  REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tResult;
+REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > CTextStream::Write() {
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tResult;
 
   T_ULONG uTotalSize = 0;
   for (::DATASTRUCTURE::CStream::iterator i = ::DATASTRUCTURE::CStream::Begin(); i != ::DATASTRUCTURE::CStream::End(); i++) {
@@ -123,7 +123,7 @@ REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > CTextStream::Write() {
 
   T_ULONG uPosition = 0;
   while (::DATASTRUCTURE::CStream::IsEmpty() == false) {
-    REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > tElement = ::DATASTRUCTURE::CStream::Pop();
+    REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement = ::DATASTRUCTURE::CStream::Pop();
 
     ::BASE::CArray<T_BYTE>::STATIC_Copy(tElement->GetElements(), tResult->GetElements() + uPosition, tElement->GetSize());
     uPosition = uPosition + tElement->GetSize();    

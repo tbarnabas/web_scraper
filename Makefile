@@ -3,7 +3,7 @@ BINARY = wsr
 
 CFLAGS += -DPROCESSOR_ARCHITECTURE=PAF_X86 -DOPERATING_SYSTEM=OSF_LINUX
 
-VPATH += base thread
+VPATH += base datastructure resource thread
 
 LIBS += -lpthread
 

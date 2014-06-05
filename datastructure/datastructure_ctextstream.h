@@ -63,7 +63,7 @@ public:
   virtual CTextStream & operator<<(const T_STRING & sValue);
 
   //! write
-  virtual REFERENCE<::DATASTRUCTURE::CArray<T_BYTE> > Write();
+  virtual REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > Write();
 }; // class CTextStream
 
 } // namespace DATASTRUCTURE
