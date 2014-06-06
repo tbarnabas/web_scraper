@@ -15,7 +15,9 @@
 #include "wsr_configuration.h"
 
 #include "wsr_creader.h"
+#include "wsr_ctask.h"
 #include "wsr_cwriter.h"
+
 
 namespace WSR {
 
@@ -30,12 +32,14 @@ private:
   CApplication & operator=(const CApplication & tApplication);
 
 public:
-  MEMBER(REFERENCE< ::WSR::CReader>, Reader);
-  MEMBER(REFERENCE< ::WSR::CWriter>, Writer);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
+
+  MEMBER__REFERENCE(::WSR::CReader, Reader);
+  MEMBER__REFERENCE(::WSR::CWriter, Writer);
 
 public:
   //! constructor
-  CApplication(T_ULONG uScraper, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth);
+  CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth);
   //! destructor
   virtual ~CApplication();
 

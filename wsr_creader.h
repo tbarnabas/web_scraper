@@ -23,22 +23,25 @@ DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EReader);
 class WSR_EXPORT_IMPORT CReader :
   public ::THREAD::CLoopThread {
 private:
-  MEMBER(REFERENCE< ::RESOURCE::CFile>, Input);
-  
+  MEMBER(T_ULONG, Scrapers);
+  MEMBER(::std::ifstream, Input);
+  MEMBER(T_ULONG, Depth);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
+
+  //! copy constructor
+  CReader(const CReader & tReader);
+  //! assignment operator
+  CReader & operator=(const CReader & tReader);
+
 protected:
   //! loop
   virtual void Loop();
 
 public:
   //! constructor
-  CReader(const T_STRING & sInput);
+  CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains);
   //! destructor
   virtual ~CReader();
-
-  //! copy constructor
-  CReader(const CReader & tReader);
-  //! assignment operator
-  CReader & operator=(const CReader & tReader);
 }; // class WSR_EXPORT_IMPORT CReader
 
 } // namespace WSR
