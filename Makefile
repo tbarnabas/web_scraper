@@ -23,6 +23,11 @@ SOURCES = \
   datastructure_cstream.cpp \
   datastructure_ctextstream.cpp \
   \
+  resource.cpp \
+  resource_capplication.cpp \
+  resource_cfile.cpp \
+  resource_cservice.cpp \
+  \
   thread.cpp \
   thread_ccondition.cpp \
   thread_cguard.cpp \
