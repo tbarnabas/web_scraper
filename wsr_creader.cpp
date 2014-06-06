@@ -14,6 +14,7 @@ void CReader::Loop() {
   if ((m_Input.eof() == false) && (m_Input.fail() == false)) {
     THREADGUARD __tGuard(m_Domains);
   
+    // enuque domains
     while ((m_Domains->GetSize() < m_Scrapers) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
       ::std::string sDomain;
       ::std::getline(m_Input, sDomain);
@@ -23,6 +24,7 @@ void CReader::Loop() {
       }
     }
     
+    // send broadcat signal to all scrapers
     m_Domains->Broadcast();
     
     printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());
