@@ -1,33 +1,34 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// wsr.h - module header
+// workflow.h - module header
 // --------------------------------------------------------------------------
 //
-// WEB SCRAPER
+// WORKFLOW
 //
 // MODULE
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#ifndef _WSR
-#define _WSR
+#ifndef _WORKFLOW
+#define _WORKFLOW
 
-#include "wsr_configuration.h"
+#include "workflow_configuration.h"
 
-namespace WSR {
+#include "workflow_cworker.h"
+
+namespace WORKFLOW {
 
 //! create module
 void Create();
 //! initialize module
 void Initialize();
-
 //! shutdown module
 void Shutdown(T_BOOLEAN bImmediate = false);
 //! destroy module
 void Destroy();
 
-} // namespace WSR
+} // namespace WORKFLOW
 
-#endif // ifndef _WSR
+#endif // #ifndef _WORKFLOW

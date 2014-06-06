@@ -1,25 +1,25 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// wsr_cworker.h - ::WSR::CWorker<C, P> class header
+// workflow_cworker.h - ::WORKFLOW::CWorker<C, P> class header
 // --------------------------------------------------------------------------
 //
-// WEB SCRAPER
+// WORKFLOW
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-#ifndef _WSR_CWORKER
-#define _WSR_CWORKER
+#ifndef _WORKFLOW_CWORKER
+#define _WORKFLOW_CWORKER
 
-#include "wsr_configuration.h"
+#include "workflow_configuration.h"
 
-namespace WSR {
+namespace WORKFLOW {
 
 DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EWorker);
 
 template <class C, class P>
-class WSR_EXPORT_IMPORT CWorker :
+class WORKFLOW_EXPORT_IMPORT CWorker :
   public ::THREAD::CLoopThread {
 public:
   MEMBER_GET_SET__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<C> >, ConsumerQueue);
@@ -50,18 +50,18 @@ public:
   CWorker(const CWorker<C, P> & tWorker);
   //! assignment operator
   CWorker<C, P> & operator=(const CWorker<C, P> & tWorker);
-}; // class WSR_EXPORT_IMPORT CWorker
+}; // class WORKFLOW_EXPORT_IMPORT CWorker
 
-} // namespace WSR
+} // namespace WORKFLOW
 
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// ::WSR::CWorker<C, P> class source
+// ::WORKFLOW::CWorker<C, P> class source
 //
 /////////////////////////////////////////////////////////////////////////////
 
-namespace WSR {
+namespace WORKFLOW {
 
 /////////////////////////////////////////////////////////////////////////////
 template <class C, class P>
@@ -188,6 +188,6 @@ CWorker<C, P> & CWorker<C, P>::operator=(const CWorker<C, P> & tWorker) {
   return (* this);
 } // operator=
 
-} // namespace WSR
+} // namespace WORKFLOW
 
-#endif // #ifndef _WSR_CWORKER
+#endif // #ifndef _WORKFLOW_CWORKER
