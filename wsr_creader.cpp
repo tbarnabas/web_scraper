@@ -28,8 +28,6 @@ void CReader::Loop() {
     m_Domains->Broadcast();
     
     printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());
-  } else {
-    ::THREAD::CLoopThread::m_TimeOut = T_TIME(5, 0);
   }
 } // Loop
 
