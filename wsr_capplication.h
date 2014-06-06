@@ -44,8 +44,6 @@ public:
   //! destructor
   virtual ~CApplication();
 
-  //! initialize
-  virtual void Initialize();
     //! run
   virtual void Run();
 }; // class WSR_EXPORT_IMPORT CApplication

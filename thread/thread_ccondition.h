@@ -79,7 +79,7 @@ public:
   //! send wakeup signal to all of waiting threads
   virtual void Broadcast();
   //! waiting for wakeup signal
-  virtual void Wait(T_TIME tTimeOut = T_TIME());
+  virtual void Wait(const T_TIME & tTimeOut = T_TIME());
   //! interrupt
   virtual void Interrupt();
 }; // class THREAD_EXPORT_IMPORT CCondition

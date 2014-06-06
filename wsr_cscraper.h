@@ -18,10 +18,10 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EScraper);
+DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EScraper);
   
 class WSR_EXPORT_IMPORT CScraper :
-  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
+  public ::THREAD::CLoopThread {
 public:
   //! constructor
   CScraper();

@@ -21,13 +21,13 @@ CScraper::~CScraper() {
 
 /////////////////////////////////////////////////////////////////////////////
 CScraper::CScraper(const CScraper & tScraper) :
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>(tScraper) {
+  ::THREAD::CLoopThread(tScraper) {
 } // CScraper
 
 
 /////////////////////////////////////////////////////////////////////////////
 CScraper & CScraper::operator=(const CScraper & tScraper) {
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>::operator=(tScraper);
+  ::THREAD::CLoopThread::operator=(tScraper);
   return (* this);
 } // operator=
 

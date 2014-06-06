@@ -18,15 +18,15 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EReader);
+DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EReader);
   
 class WSR_EXPORT_IMPORT CReader :
-  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
+  public ::THREAD::CLoopThread {
 protected:
-  //! prepare
-  virtual T_BOOLEAN Prepare();
+  //! loop
+  virtual void Loop();
 
-  public:
+public:
   //! constructor
   CReader();
   //! destructor

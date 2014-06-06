@@ -89,7 +89,7 @@ void CObjectManager<K>::Initialize() {
   for (i = 0; i < uSize; i++) {
     REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i);
 
-    THREADGUARD __tGuard(tObject);
+    //THREADGUARD __tGuard(tObject);
     tObject->Initialize();
   }
 } // Initialize
@@ -104,7 +104,7 @@ void CObjectManager<K>::Shutdown(T_BOOLEAN bImmediate) {
   for (i = uSize; i > 0 ; i--) {
     REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i - 1);
 
-    THREADGUARD __tGuard(tObject);
+    //THREADGUARD __tGuard(tObject);
     IGNORE_EXCEPTION(tObject->Shutdown(bImmediate));
   }
 } // Shutdown

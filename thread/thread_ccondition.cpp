@@ -153,7 +153,7 @@ void CCondition::Broadcast() {
 
 
 /////////////////////////////////////////////////////////////////////////////
-void CCondition::Wait(T_TIME tTimeOut) {
+void CCondition::Wait(const T_TIME & tTimeOut) {
   T_BOOLEAN bTimedOut = false;
   T_BOOLEAN bInterrupted = false;
 
@@ -239,11 +239,10 @@ void CCondition::Wait(T_TIME tTimeOut) {
     timespec t;
 
     // add current time and timeout
-    tTimeOut = tTimeOut + T_TIME::STATIC_GetCurrent();
+    T_TIME _tTimeOut = tTimeOut + T_TIME::STATIC_GetCurrent();
 
-    t.tv_sec = tTimeOut.GetDelaySec();
-    t.tv_nsec = tTimeOut.GetDelayUSec() * 1000;
-
+    t.tv_sec = _tTimeOut.GetDelaySec();
+    t.tv_nsec = _tTimeOut.GetDelayUSec() * 1000;
     if (pthread_cond_timedwait(&m_tCondition, &m_tMutex, &t) == ETIMEDOUT) {
       bTimedOut = true;
     }

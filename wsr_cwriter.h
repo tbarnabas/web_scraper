@@ -18,10 +18,10 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EWriter);
+DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EWriter);
   
 class WSR_EXPORT_IMPORT CWriter :
-  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
+  public ::THREAD::CLoopThread {
 public:
   //! constructor
   CWriter();

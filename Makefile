@@ -3,7 +3,7 @@ BINARY = wsr
 
 CFLAGS += -DPROCESSOR_ARCHITECTURE=PAF_X86 -DOPERATING_SYSTEM=OSF_LINUX
 
-VPATH += base datastructure resource thread workflow
+VPATH += base datastructure resource thread
 
 LIBS += -lpthread
 
@@ -35,8 +35,6 @@ SOURCES = \
   thread_cmutex.cpp \
   thread_cobject.cpp \
   thread_cthread.cpp \
-  \
-  workflow.cpp \
   \
   wsr.cpp \
   wsr_capplication.cpp \

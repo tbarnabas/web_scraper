@@ -19,7 +19,6 @@ void Create() {
     ::THREAD::Create();
     ::DATASTRUCTURE::Create();
     ::RESOURCE::Create();
-    ::WORKFLOW::Create();
     GLOBAL_bCreated = true;
   }
 } // Create
@@ -33,7 +32,6 @@ void Initialize() {
     ::THREAD::Initialize();
     ::DATASTRUCTURE::Initialize();
     ::RESOURCE::Initialize();
-    ::WORKFLOW::Initialize();
     GLOBAL_bInitialized = true;
   }
 } // Initialize
@@ -42,7 +40,6 @@ void Initialize() {
 /////////////////////////////////////////////////////////////////////////////
 void Shutdown(T_BOOLEAN bImmediate) {
   if (GLOBAL_bInitialized == true)  {
-    ::WORKFLOW::Shutdown(bImmediate);
     ::RESOURCE::Shutdown(bImmediate);
     ::DATASTRUCTURE::Shutdown(bImmediate);
     ::THREAD::Shutdown(bImmediate);
@@ -56,7 +53,6 @@ void Shutdown(T_BOOLEAN bImmediate) {
 void Destroy() {
   Shutdown(true);
   if (GLOBAL_bCreated == true)  {
-    ::WORKFLOW::Destroy();
     ::RESOURCE::Destroy();
     ::DATASTRUCTURE::Destroy();
     ::THREAD::Destroy();

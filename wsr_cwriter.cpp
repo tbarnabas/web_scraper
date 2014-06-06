@@ -21,13 +21,13 @@ CWriter::~CWriter() {
 
 /////////////////////////////////////////////////////////////////////////////
 CWriter::CWriter(const CWriter & tWriter) :
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>(tWriter) {
+  ::THREAD::CLoopThread(tWriter) {
 } // CWriter
 
 
 /////////////////////////////////////////////////////////////////////////////
 CWriter & CWriter::operator=(const CWriter & tWriter) {
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>::operator=(tWriter);
+  ::THREAD::CLoopThread::operator=(tWriter);
   return (* this);
 } // operator=
 

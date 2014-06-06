@@ -10,14 +10,14 @@
 namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
-T_BOOLEAN CReader::Prepare() {
-  printf("PREPARE\n");
-  return (true);
-} // Prepare
+void CReader::Loop() {
+  printf("LOOP\n");
+} // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CReader::CReader() {
+CReader::CReader() :
+  ::THREAD::CLoopThread(::BASE::CObject::BLOCKED, T_TIME(1, 0)) {
 } // CReader
 
 
@@ -28,13 +28,13 @@ CReader::~CReader() {
 
 /////////////////////////////////////////////////////////////////////////////
 CReader::CReader(const CReader & tReader) :
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>(tReader) {
+  ::THREAD::CLoopThread(tReader) {
 } // CReader
 
 
 /////////////////////////////////////////////////////////////////////////////
 CReader & CReader::operator=(const CReader & tReader) {
-  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>::operator=(tReader);
+  ::THREAD::CLoopThread::operator=(tReader);
   return (* this);
 } // operator=
 

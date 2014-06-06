@@ -10,7 +10,9 @@
 #include "thread_ccondition.h"
 #include "thread_cguard.h"
 
+#include <unistd.h>
 namespace THREAD {
+
 
 /////////////////////////////////////////////////////////////////////////////
 void CLoopThread::__construct(::BASE::CObject::synchronizations synchronization, const T_TIME & tTimeOut) {
@@ -36,7 +38,7 @@ void CLoopThread::Execute() {
 
     // waiting for timeout or exit condition
     if (::THREAD::CObject::GetInterrupted() == false) {
-      if (m_Synchronization == ::BASE::CObject::BLOCKED ) {
+      if (m_Synchronization == ::BASE::CObject::BLOCKED) {
         IGNORE_EXCEPTION(::THREAD::CObject::Wait(m_TimeOut));
       }
     }
