@@ -4,7 +4,7 @@
 // wsr_capplication.h - ::WSR::CApplication class header
 // --------------------------------------------------------------------------
 //
-// WEB SCARPER
+// WEB SCRAPER
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -13,6 +13,8 @@
 #define _WSR_CAPPLICATION
 
 #include "wsr_configuration.h"
+
+#include "wsr_creader.h"
 
 namespace WSR {
 
@@ -27,14 +29,16 @@ private:
   CApplication & operator=(const CApplication & tApplication);
 
 public:
-  MEMBER_GET(T_ULONG, Scarper);
+  MEMBER_GET(T_ULONG, Scraper);
   MEMBER_GET(T_STRING, Input);
   MEMBER_GET(T_STRING, Output);
   MEMBER_GET(T_ULONG, Depth);
+  
+  MEMBER(REFERENCE< ::WSR::CReader>, Reader);
 
 public:
   //! constructor
-  CApplication(T_ULONG uScarper, T_STRING sInput, T_STRING sOutput, T_ULONG uDepth);
+  CApplication(T_ULONG uScraper, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth);
   //! destructor
   virtual ~CApplication();
 

@@ -17,6 +17,10 @@
 #include "wsr_configuration.h"
 
 #include "wsr_capplication.h"
+#include "wsr_creader.h"
+#include "wsr_cscraper.h"
+#include "wsr_ctask.h"
+#include "wsr_cwriter.h"
 
 namespace WSR {
 

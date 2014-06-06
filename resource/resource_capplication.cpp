@@ -11,8 +11,8 @@ namespace RESOURCE {
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Loop() {
-  THREADGUARD __tGuard(m_tObjectManager);
-  m_tObjectManager.Maintain();
+  THREADGUARD __tGuard(m_ObjectManager);
+  m_ObjectManager.Maintain();
 } // Loop
 
 
@@ -21,7 +21,7 @@ CApplication::CApplication(::BASE::CObject::synchronizations synchronization, co
   ::THREAD::CLoopThread(synchronization, tTimeOut) {
   REFERENCE< ::THREAD::CObject> tSynchronizator;
   tSynchronizator.Create(new ::THREAD::CMutex());
-  m_tObjectManager.SetSynchronizator(tSynchronizator);
+  m_ObjectManager.SetSynchronizator(tSynchronizator);
 } // CApplication
 
 
@@ -33,8 +33,8 @@ CApplication::~CApplication() {
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Initialize() {
   {
-    THREADGUARD __tGuard(m_tObjectManager);
-    m_tObjectManager.Initialize();
+    THREADGUARD __tGuard(m_ObjectManager);
+    m_ObjectManager.Initialize();
   }
   ::THREAD::CLoopThread::Initialize();
 } // Initialize
@@ -44,8 +44,8 @@ void CApplication::Initialize() {
 void CApplication::Shutdown(T_BOOLEAN bImmediate) {
   ::THREAD::CLoopThread::Shutdown(bImmediate);
   {
-    THREADGUARD __tGuard(m_tObjectManager);
-    m_tObjectManager.Shutdown(bImmediate);
+    THREADGUARD __tGuard(m_ObjectManager);
+    m_ObjectManager.Shutdown(bImmediate);
   }
 } // Shutdown
 
@@ -54,8 +54,8 @@ void CApplication::Shutdown(T_BOOLEAN bImmediate) {
 void CApplication::Maintain() {
   ::THREAD::CLoopThread::Maintain();
   {
-    THREADGUARD __tGuard(m_tObjectManager);
-    m_tObjectManager.Maintain();
+    THREADGUARD __tGuard(m_ObjectManager);
+    m_ObjectManager.Maintain();
   }
 } // Maintain
 

@@ -30,7 +30,7 @@ private:
 
 protected:
   //! object manager
-  ::RESOURCE::CObjectManager<T_ULONG> m_tObjectManager;
+  MEMBER(::RESOURCE::CObjectManager<T_ULONG>, ObjectManager);
 
   //! loop
   virtual void Loop();
