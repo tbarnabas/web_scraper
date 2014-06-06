@@ -26,7 +26,22 @@ __T_INT main(__T_INT iArgc, __T_CHAR * * pArgv) {
     // parse command line
     if (iArgc != 1) {
       if (T_STRING(pArgv[1]) == "-s") {
-        ;
+	    T_ULONG uScraper = 10;
+		T_STRING sInput = "domains.txt";
+		T_STRING sOutput = "emails.txt";
+		T_ULONG uDepth = 1;
+	  
+	    // create a new application
+	    ::WSR::CApplication tApplication(uScraper, sInput, sOutput, uDepth);
+		
+		// initialize application
+		tApplication.Initialize();
+
+		// run application
+		tApplication.Run();
+
+		// shutdown application
+		tApplication.Shutdown(true);
       } else if ((T_STRING(pArgv[1]) == "-h") || (T_STRING(pArgv[1]) == "--help")) {
         printf(::STATIC_pUsage);
       }

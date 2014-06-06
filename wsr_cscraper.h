@@ -21,7 +21,7 @@ namespace WSR {
 DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EScraper);
   
 class WSR_EXPORT_IMPORT CScraper :
-  public ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> > {
+  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
 public:
   //! constructor
   CScraper();

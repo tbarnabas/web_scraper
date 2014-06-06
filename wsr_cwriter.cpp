@@ -21,13 +21,13 @@ CWriter::~CWriter() {
 
 /////////////////////////////////////////////////////////////////////////////
 CWriter::CWriter(const CWriter & tWriter) :
-  ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> >(tWriter) {
+  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>(tWriter) {
 } // CWriter
 
 
 /////////////////////////////////////////////////////////////////////////////
 CWriter & CWriter::operator=(const CWriter & tWriter) {
-  ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> >::operator=(tWriter);
+  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>::operator=(tWriter);
   return (* this);
 } // operator=
 

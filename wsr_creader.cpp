@@ -10,6 +10,13 @@
 namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
+T_BOOLEAN CReader::Prepare() {
+  printf("PREPARE\n");
+  return (true);
+} // Prepare
+
+
+/////////////////////////////////////////////////////////////////////////////
 CReader::CReader() {
 } // CReader
 
@@ -21,13 +28,13 @@ CReader::~CReader() {
 
 /////////////////////////////////////////////////////////////////////////////
 CReader::CReader(const CReader & tReader) :
-  ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> >(tReader) {
+  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>(tReader) {
 } // CReader
 
 
 /////////////////////////////////////////////////////////////////////////////
 CReader & CReader::operator=(const CReader & tReader) {
-  ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> >::operator=(tReader);
+  ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask>::operator=(tReader);
   return (* this);
 } // operator=
 

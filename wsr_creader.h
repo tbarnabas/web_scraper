@@ -21,8 +21,12 @@ namespace WSR {
 DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EReader);
   
 class WSR_EXPORT_IMPORT CReader :
-  public ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> > {
-public:
+  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
+protected:
+  //! prepare
+  virtual T_BOOLEAN Prepare();
+
+  public:
   //! constructor
   CReader();
   //! destructor

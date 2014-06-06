@@ -15,6 +15,7 @@
 #include "wsr_configuration.h"
 
 #include "wsr_creader.h"
+#include "wsr_cwriter.h"
 
 namespace WSR {
 
@@ -35,6 +36,7 @@ public:
   MEMBER_GET(T_ULONG, Depth);
   
   MEMBER(REFERENCE< ::WSR::CReader>, Reader);
+  MEMBER(REFERENCE< ::WSR::CWriter>, Writer);
 
 public:
   //! constructor
@@ -44,6 +46,8 @@ public:
 
   //! initialize
   virtual void Initialize();
+    //! run
+  virtual void Run();
 }; // class WSR_EXPORT_IMPORT CApplication
 
 } // namespace WSR

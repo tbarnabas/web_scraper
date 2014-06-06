@@ -21,7 +21,7 @@ namespace WSR {
 DERIVE_ABSTRACT_EXCEPTION(::WORKFLOW::EWorker, EWriter);
   
 class WSR_EXPORT_IMPORT CWriter :
-  public ::WORKFLOW::CWorker<REFERENCE< ::WSR::CTask>, REFERENCE< ::WSR::CTask> > {
+  public ::WORKFLOW::CWorker< ::WSR::CTask, ::WSR::CTask> {
 public:
   //! constructor
   CWriter();

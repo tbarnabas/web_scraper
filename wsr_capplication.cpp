@@ -33,4 +33,11 @@ void CApplication::Initialize() {
   ::RESOURCE::CApplication::Initialize();
 } // Initialize
 
+
+/////////////////////////////////////////////////////////////////////////////
+void CApplication::Run() {
+  printf("HELLO\n");
+  sleep(3000);
+} // Run
+
 } // namespace WSR
