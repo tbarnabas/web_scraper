@@ -16,6 +16,8 @@
 
 #include "wsr_configuration.h"
 
+#include "wsr_capplication.h"
+
 namespace WSR {
 
 //! create module

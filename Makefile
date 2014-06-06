@@ -39,6 +39,7 @@ SOURCES = \
   workflow.cpp \
   \
   wsr.cpp \
+  wsr_capplication.cpp \
   \
   main.cpp
   
