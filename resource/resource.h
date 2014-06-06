@@ -17,9 +17,7 @@
 #include "resource_configuration.h"
 
 #include "resource_capplication.h"
-#include "resource_cfile.h"
 #include "resource_cobjectmanager.h"
-#include "resource_cservice.h"
 
 #if (DE_FAMILY == DEF_ARDUINO)
 #include "resource.cpp"

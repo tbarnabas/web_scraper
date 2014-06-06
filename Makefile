@@ -25,8 +25,6 @@ SOURCES = \
   \
   resource.cpp \
   resource_capplication.cpp \
-  resource_cfile.cpp \
-  resource_cservice.cpp \
   \
   thread.cpp \
   thread_ccondition.cpp \

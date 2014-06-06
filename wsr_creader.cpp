@@ -11,13 +11,16 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CReader::Loop() {
+  
   printf("LOOP\n");
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CReader::CReader() :
+CReader::CReader(const T_STRING & sInput) :
   ::THREAD::CLoopThread(::BASE::CObject::BLOCKED, T_TIME(1, 0)) {
+  // create a new file
+  m_Input.Create(new ::RESOURCE::CFile(sInput, ::RESOURCE::CFile::READ));
 } // CReader
 
 

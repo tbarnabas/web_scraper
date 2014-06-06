@@ -30,11 +30,6 @@ private:
   CApplication & operator=(const CApplication & tApplication);
 
 public:
-  MEMBER_GET(T_ULONG, Scraper);
-  MEMBER_GET(T_STRING, Input);
-  MEMBER_GET(T_STRING, Output);
-  MEMBER_GET(T_ULONG, Depth);
-  
   MEMBER(REFERENCE< ::WSR::CReader>, Reader);
   MEMBER(REFERENCE< ::WSR::CWriter>, Writer);
 

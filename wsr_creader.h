@@ -22,13 +22,16 @@ DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EReader);
   
 class WSR_EXPORT_IMPORT CReader :
   public ::THREAD::CLoopThread {
+private:
+  MEMBER(REFERENCE< ::RESOURCE::CFile>, Input);
+  
 protected:
   //! loop
   virtual void Loop();
 
 public:
   //! constructor
-  CReader();
+  CReader(const T_STRING & sInput);
   //! destructor
   virtual ~CReader();
 

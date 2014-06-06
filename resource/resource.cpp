@@ -7,13 +7,6 @@
 
 #include "resource.h"
 
-#if (DE_FAMILY == DEF_ARDUINO)
-#include "resource_capplication.cpp"
-#include "resource_cfile.cpp"
-#include "resource_cobjectmanager.cpp"
-#include "resource_cservice.cpp"
-#endif // #if (DE_FAMILY == DEF_ARDUINO)
-
 namespace RESOURCE {
 
 T_ULONG GLOBAL_uCreated = 0;
