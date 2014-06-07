@@ -11,13 +11,13 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CScraper::Loop() {
-/*  REFERENCE< ::WSR::CTask> tTask;
+  REFERENCE< ::WSR::CTask> tTask;
   
   {
     THREADGUARD __tGuard(m_Domains);
     
     // waiting for task
-    while (m_Domains->IsEmpty() == true) {
+    while ((m_Domains->IsEmpty() == true) && (::THREAD::CObject::GetInterrupted() == false)) {
       m_Domains->Wait();
     }
     
@@ -40,13 +40,13 @@ void CScraper::Loop() {
     
     // send wakeup signal to consumer
     m_Emails->Signal();
-  }*/
+  }
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
 CScraper::CScraper(::WSR::CReader * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails) :
-  ::THREAD::CLoopThread(::BASE::CObject::BLOCKED),
+  ::THREAD::CLoopThread(::BASE::CObject::NON_BLOCKED),
   m_Reader(pReader),
   m_Domains(pDomains),
   m_Emails(pEmails) {

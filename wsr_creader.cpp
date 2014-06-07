@@ -14,20 +14,24 @@ void CReader::Loop() {
   if (m_Input.eof() == false) {
     THREADGUARD __tGuard(m_Domains);
     
+    T_ULONG uNumber = 0;
+    
     // enqueue domains
     while ((m_Domains->GetSize() < m_Scrapers) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
       ::std::string sDomain;
       ::std::getline(m_Input, sDomain);
       if (m_Input.fail() == false) {
-        REFERENCE< ::WSR::CTask> tTask;
         m_Domains->Push(REFERENCE< ::WSR::CTask>().Create(new ::WSR::CTask(sDomain.c_str(), m_Depth)));
+        uNumber = uNumber + 1;        
       }
+    }
+
+    if (uNumber > 0) {
+      printf("::WSR::CReader::Loop() > %d domain(s) enqueued\n", uNumber);
     }
     
     // broadcast wakeup signal to all consumers
-    m_Domains->Broadcast();
-    
-    printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());
+    m_Domains->Broadcast();    
   }
 } // Loop
 
