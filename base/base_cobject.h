@@ -32,6 +32,7 @@ public:
   MEMBER_GET_SET(storages, Storage);
   MEMBER_GET_SET(T_ULONG, References);
   MEMBER_GETP_SETP__REFERENCE(IObject, Synch);
+  MEMBER_GET(T_BOOLEAN, Shutdown);
   MEMBER_GET(T_BOOLEAN, Immediate);
 
 public:

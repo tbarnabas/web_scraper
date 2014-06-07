@@ -18,8 +18,14 @@
 
 #include "base_configuration.h"
 
+#include "base_icondition.h"
+//#include "base_iloopthread.h"
+#include "base_imutex.h"
+#include "base_iobject.h"
+//#include "base_ithread.h"
+
 #include "base_carray.h"
-//#include "base_ccondition.h"
+#include "base_ccondition.h"
 #include "base_cguard.h"
 #include "base_cinterval.h"
 #include "base_cipaddress.h"
@@ -31,8 +37,9 @@
 #include "base_cstring.h"
 //#include "base_cthread.h"
 #include "base_ctime.h"
+
 #include "base_eexception.h"
-#include "base_iobject.h"
+
 
 #if (DE_FAMILY == DEF_ARDUINO)
 

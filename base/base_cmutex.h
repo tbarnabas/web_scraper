@@ -17,11 +17,16 @@
 
 #include "base_configuration.h"
 
+#include "base_imutex.h"
+
 #include "base_cobject.h"
 
 namespace BASE {
 
-class BASE_EXPORT_IMPORT CMutex : 
+DERIVE_ABSTRACT_EXCEPTION(EObject, EMutex);
+
+class BASE_EXPORT_IMPORT CMutex :
+  virtual public IMutex, 
   virtual public CObject {
 protected:
 

@@ -5,6 +5,7 @@ VPATH += base datastructure resource
 
 SOURCES = \
   base.cpp \
+  base_ccondition.cpp \
   base_cguard.cpp \
   base_cipaddress.cpp \
   base_cmessage.cpp \
@@ -23,7 +24,6 @@ SOURCES = \
   resource.cpp \
   resource_capplication.cpp \
   \
-  thread_ccondition.cpp \
   thread_cloopthread.cpp \
   thread_cthread.cpp \
   \

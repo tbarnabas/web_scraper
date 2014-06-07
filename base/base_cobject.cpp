@@ -13,6 +13,7 @@ namespace BASE {
 void CObject::__construct() {
   m_Storage = STATIC;
   m_References = 0;
+  m_Shutdown = false;
   m_Immediate = false;
 } // CObject
 
@@ -43,6 +44,7 @@ CObject & CObject::operator=(const CObject & tObject) {
 
 /////////////////////////////////////////////////////////////////////////////
 void CObject::Shutdown(T_BOOLEAN bImmediate) {
+  m_Shutdown = true;
   m_Immediate = bImmediate;
   if (m_Synch.IsValid() == true) {
     m_Synch->Shutdown(bImmediate);

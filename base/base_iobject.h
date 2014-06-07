@@ -1,7 +1,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// base_iobject.h - ::BASE::IObject class header
+// base_iobject.h - ::BASE::IObject interface header
 // --------------------------------------------------------------------------
 //
 // BASE
@@ -21,6 +21,15 @@ namespace BASE {
 
 class BASE_EXPORT_IMPORT IObject {
 public:
+  //! convert storages enumeration to string
+  ENUMERATION_TO_STRING(storages,
+    CASE_TO_STRING(STATIC)
+    CASE_TO_STRING(DYNAMIC));
+  //! convert string to storages enumeration
+  STRING_TO_ENUMERATION(storages, 
+    CASE_TO_ENUMERATION(STATIC)
+    CASE_TO_ENUMERATION(DYNAMIC));
+
   //! enumeration for different operation types
   enum operations {
     READ,
@@ -60,6 +69,7 @@ public:
   IMEMBER_GET_SET(storages, Storage);
   IMEMBER_GET_SET(T_ULONG, References);
   IMEMBER_GETP_SETP__REFERENCE(IObject, Synch);
+  IMEMBER_GET(T_BOOLEAN, Shutdown);
   IMEMBER_GET(T_BOOLEAN, Immediate);
     
 public:

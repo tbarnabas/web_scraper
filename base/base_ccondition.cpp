@@ -1,7 +1,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// base_ccondition.cpp - ::THREAD::CCondition class source
+// base_ccondition.cpp - ::BASE::CCondition class source
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -9,7 +9,7 @@
 
 #include "base_cguard.h"
 
-namespace THREAD {
+namespace BASE {
 
 /////////////////////////////////////////////////////////////////////////////
 void CCondition::__construct() {
@@ -27,7 +27,7 @@ void CCondition::__construct() {
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
   // initialize condition
-  pbase_cond_init(&m_tCondition, NULL);
+  pthread_cond_init(&m_tCondition, NULL);
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -49,7 +49,7 @@ void CCondition::__destruct() {
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
   // destroy condition
-  pbase_cond_destroy(&m_tCondition);
+  pthread_cond_destroy(&m_tCondition);
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -74,7 +74,7 @@ CCondition::~CCondition() {
 
 /////////////////////////////////////////////////////////////////////////////
 CCondition::CCondition(const CCondition & tCondition) :
-  ::THREAD::CMutex(tCondition) {
+  CMutex(tCondition) {
   __construct();
 } // CCondition
 
@@ -82,7 +82,7 @@ CCondition::CCondition(const CCondition & tCondition) :
 /////////////////////////////////////////////////////////////////////////////
 CCondition & CCondition::operator=(const CCondition & tCondition) {
   __destruct();
-  ::THREAD::CMutex::operator=(tCondition);
+  CMutex::operator=(tCondition);
   __construct();
   return (* this);
 } // operator=
@@ -109,7 +109,7 @@ void CCondition::Signal() {
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
   // send wakeup signal to one of waiting threads
-  pbase_cond_signal(&m_tCondition);
+  pthread_cond_signal(&m_tCondition);
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -141,7 +141,7 @@ void CCondition::Broadcast() {
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
   // send wakeup signal to all of waiting threads
-  pbase_cond_broadcast(&m_tCondition);
+  pthread_cond_broadcast(&m_tCondition);
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -155,10 +155,10 @@ void CCondition::Broadcast() {
 /////////////////////////////////////////////////////////////////////////////
 void CCondition::Wait(const T_TIME & tTimeOut) {
   T_BOOLEAN bTimedOut = false;
-  T_BOOLEAN bInterrupted = false;
+  T_BOOLEAN bShutdown = false;
 
   // acquire object
-  ::THREAD::CObject::Acquire();
+  Acquire();
 
 #if (OS_FAMILY == OSF_WINDOWS)
 
@@ -177,9 +177,9 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
   }
 
   // release object
-  ::THREAD::CMutex::Release();
+  Release();
 
-  while ((bExit == false) && (bTimedOut == false) && (bInterrupted == false)) {
+  while ((bExit == false) && (bTimedOut == false) && (bShutdown == false)) {
     DWORD uResult = 0;
 
     // waiting for events
@@ -195,10 +195,10 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
     }
 
     // check interrupted state
-    bInterrupted = ::THREAD::CObject::GetInterrupted();
+    bShutdown = GetShutdown();
 
     // check exit condition
-    if ((bTimedOut == false) && (bInterrupted == false)) {
+    if ((bTimedOut == false) && (bShutdown == false)) {
       THREADGUARD __tGuard(m_tCondition.m_tMutex);
 
       if ((m_tCondition.m_uReleased > 0) && (m_tCondition.m_uGeneration != uGeneration)) {
@@ -208,7 +208,7 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
   }
 
   // acquire object
-  ::THREAD::CMutex::Acquire();
+  Acquire();
 
   {
     THREADGUARD __tGuard(m_tCondition.m_tMutex);
@@ -234,21 +234,21 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
 
   // waiting for wakeup signal
   if (tTimeOut.IsValid() == false) {
-    pbase_cond_wait(&m_tCondition, &m_tMutex);
+    pthread_cond_wait(&m_tCondition, &m_tMutex);
   } else {
     timespec t;
 
     // add current time and timeout
-    T_TIME _tTimeOut = tTimeOut + T_TIME::STATIC_GetCurrent();
+    T_TIME _tTimeOut = tTimeOut + T_TIME::GetCurrent();
 
     t.tv_sec = _tTimeOut.GetDelaySec();
     t.tv_nsec = _tTimeOut.GetDelayUSec() * 1000;
-    if (pbase_cond_timedwait(&m_tCondition, &m_tMutex, &t) == ETIMEDOUT) {
+    if (pthread_cond_timedwait(&m_tCondition, &m_tMutex, &t) == ETIMEDOUT) {
       bTimedOut = true;
     }
 
     // check interrupted state
-    bInterrupted = ::THREAD::CObject::GetInterrupted();
+    bShutdown = GetShutdown();
   }
 
 #elif (PA_FAMILY == PAF_AVR)
@@ -258,16 +258,16 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
 #endif
 
   // release object
-  ::THREAD::CObject::Release();
+  Release();
 
-  if (bInterrupted == true) {
-    EXCEPTION(THREAD, ::THREAD::CCondition, Wait,
-    MESSAGE("WARNING: waiting interrupted"));
-    THROW(::THREAD::EObject, INTERRUPTED);
+  if (bShutdown == true) {
+    EXCEPTION(BASE, ::BASE::CCondition, Wait,
+    MESSAGE("WARNING: shutting down .."));
+    THROW(ECondition, TIMED_OUT);
   }
 
   if (bTimedOut == true) {
-    EXCEPTION(THREAD, ::THREAD::CCondition, Wait,
+    EXCEPTION(BASE, ::BASE::CCondition, Wait,
     MESSAGE("WARNING: timed out"));
     THROW(ECondition, TIMED_OUT);
   }
@@ -275,9 +275,9 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
 
 
 /////////////////////////////////////////////////////////////////////////////
-void CCondition::Interrupt() {
-  ::THREAD::CMutex::Interrupt();
+void CCondition::Shutdown(T_BOOLEAN bImmediate) {
+  CMutex::Shutdown(bImmediate);
   Broadcast();
-} // Interrupt
+} // Shutdown
 
 } // namespace THREAD

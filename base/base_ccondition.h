@@ -1,10 +1,10 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// base_ccondition.h - ::THREAD::CCondition class header
+// base_ccondition.h - ::BASE::CCondition class header
 // --------------------------------------------------------------------------
 //
-// THREAD
+// BASE
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -12,28 +12,31 @@
 // note: not implemented on PAF_AVR platforms
 
 #pragma once
-#ifndef _THREAD_CCONDITION
-#define _THREAD_CCONDITION
+#ifndef _BASE_CCONDITION
+#define _BASE_CCONDITION
 
 #include "base_configuration.h"
 
+#include "base_icondition.h"
+
 #include "base_cmutex.h"
 
-namespace THREAD {
+namespace BASE {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::EMutex, ECondition)
+DERIVE_EXCEPTION_BEGIN(EMutex, ECondition)
   TIMED_OUT
 DERIVE_EXCEPTION_END(ECondition);
 
-class THREAD_EXPORT_IMPORT CCondition :
-  virtual public ::THREAD::CMutex {
+class BASE_EXPORT_IMPORT CCondition :
+  virtual public ICondition,
+  virtual public CMutex {
 private:
 
 #if (OS_FAMILY == OSF_WINDOWS)
 
   typedef struct {
     //! mutex
-    ::THREAD::CMutex m_tMutex;
+    CMutex m_tMutex;
     //! number of waiting threads
     T_UINT m_uWait;
     //! number of released threads
@@ -42,15 +45,15 @@ private:
     T_UINT m_uGeneration;
     //! event handle
     HANDLE m_hEvent;
-  } base_cond_t;
+  } thread_cond_t;
 
   //! condition variable
-  base_cond_t m_tCondition;
+  thread_cond_t m_tCondition;
 
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
   //! condition variable
-  pbase_cond_t m_tCondition;
+  pthread_cond_t m_tCondition;
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -80,10 +83,10 @@ public:
   virtual void Broadcast();
   //! waiting for wakeup signal
   virtual void Wait(const T_TIME & tTimeOut = T_TIME());
-  //! interrupt
-  virtual void Interrupt();
-}; // class THREAD_EXPORT_IMPORT CCondition
+  //! shutdown
+  virtual void Shutdown(T_BOOLEAN bImmediate = false);
+}; // class BASE_EXPORT_IMPORT CCondition
 
-} // namespace THREAD
+} // namespace BASE
 
-#endif // #ifndef _THREAD_CCONDITION
+#endif // #ifndef _BASE_CCONDITION
