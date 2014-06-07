@@ -39,17 +39,18 @@ void CScraper::Loop() {
     m_Emails->Push(tTask);
     
     // send wakeup signal to consumer
-    m_Emails->Signal();
+    m_Writer->Signal();
   }
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CScraper::CScraper(::WSR::CReader * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails) :
+CScraper::CScraper(::THREAD::CObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::THREAD::CObject * pWriter) :
   ::THREAD::CLoopThread(::BASE::CObject::NON_BLOCKED),
   m_Reader(pReader),
   m_Domains(pDomains),
-  m_Emails(pEmails) {
+  m_Emails(pEmails),
+  m_Writer(pWriter) {
 } // CScraper
 
 

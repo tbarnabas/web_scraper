@@ -14,7 +14,6 @@
 
 #include "wsr_configuration.h"
 
-#include "wsr_creader.h"
 #include "wsr_ctask.h"
 
 namespace WSR {
@@ -24,9 +23,10 @@ DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EScraper);
 class WSR_EXPORT_IMPORT CScraper :
   public ::THREAD::CLoopThread {
 private:
-  MEMBER__REFERENCE(::WSR::CReader, Reader);
+  MEMBER__REFERENCE(::THREAD::CObject, Reader);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
+  MEMBER__REFERENCE(::THREAD::CObject, Writer);
 
   //! copy constructor
   CScraper(const CScraper & tScraper);
@@ -39,7 +39,7 @@ protected:
 
 public:
   //! constructor
-  CScraper(::WSR::CReader * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails);
+  CScraper(::THREAD::CObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::THREAD::CObject * pWriter);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper

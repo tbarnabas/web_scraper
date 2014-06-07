@@ -27,18 +27,18 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   // create a new reader
   m_Reader.Create(new ::WSR::CReader(uScrapers, sInput, uDepth, m_Domains));
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Reader.__ptr());
+
+  // create a new writer
+  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails));
+  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
   
   // create new scrapers
   for (T_ULONG i = 0; i < uScrapers; i++) {
-    tScraper.Create(new ::WSR::CScraper(m_Reader, m_Domains, m_Emails));
+    tScraper.Create(new ::WSR::CScraper(m_Reader, m_Domains.__ptr(), m_Emails, m_Writer.__ptr()));
     tScraper->SetSynchronizator(m_Domains->GetSynchronizator());
     m_ObjectManager.Insert(m_ObjectManager.GetSize(), tScraper.__ptr());
   }
 
-  // create a new writer
-  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails));
-  m_Writer->SetSynchronizator(m_Emails->GetSynchronizator());
-  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
 } // CApplication
 
 

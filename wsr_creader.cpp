@@ -26,12 +26,12 @@ void CReader::Loop() {
       }
     }
 
-    if (uNumber > 0) {
-      printf("::WSR::CReader::Loop() > %d domain(s) enqueued\n", uNumber);
-    }
-    
     // broadcast wakeup signal to all consumers
     m_Domains->Broadcast();    
+
+    if (uNumber > 0) {
+      printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());
+    }
   }
 } // Loop
 
