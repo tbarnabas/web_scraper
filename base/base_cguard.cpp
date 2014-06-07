@@ -10,21 +10,29 @@
 namespace BASE {
 
 /////////////////////////////////////////////////////////////////////////////
-CGuard::CGuard(IObject & tObject, IObject::operations operation, IObject::modes mode) {
-  m_tObject = &tObject;
-
-  // acquire object
-  if (m_tObject.IsValid() == true) {
-    m_tObject->Acquire(operation, mode);
+CGuard::CGuard(IObject & tObject, IObject::operations operation, IObject::modes mode, T_BOOLEAN bInverse) :
+  m_Object(&tObject),
+  m_operation(operation),
+  m_mode(mode),
+  m_Inverse(bInverse) {
+  if (m_Object.IsValid() == true) {
+    if (m_Inverse == false) {
+      m_Object->Acquire(m_operation, m_mode);
+    } else {
+      m_Object->Release();
+    }
   }
 } // CGuard
 
 
 /////////////////////////////////////////////////////////////////////////////
 CGuard::~CGuard() {
-  if (m_tObject.IsValid() == true) {
-    m_tObject->Release();
-    m_tObject = NULL;
+  if (m_Object.IsValid() == true) {
+    if (m_Inverse == false) {
+      m_Object->Release();
+    } else {
+      m_Object->Acquire(m_operation, m_mode);
+    }
   }
 } // ~CGuard
 

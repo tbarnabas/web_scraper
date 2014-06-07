@@ -8,11 +8,13 @@ SOURCES = \
   base_ccondition.cpp \
   base_cguard.cpp \
   base_cipaddress.cpp \
+  base_cloopthread.cpp \
   base_cmessage.cpp \
   base_cmutex.cpp \
   base_cobject.cpp \
   base_creference.cpp \
   base_cstring.cpp \
+  base_cthread.cpp \
   base_ctime.cpp \
   base_eexception.cpp \
   \
@@ -23,9 +25,6 @@ SOURCES = \
   \
   resource.cpp \
   resource_capplication.cpp \
-  \
-  thread_cloopthread.cpp \
-  thread_cthread.cpp \
   \
   wsr.cpp \
   wsr_capplication.cpp \

@@ -18,13 +18,15 @@
 
 namespace BASE {
 
-#define BASEGUARD ::BASE::CGuard
+#define GUARD ::BASE::CGuard
 
 class BASE_EXPORT_IMPORT CGuard {
 private:
-  //! reference to object
-  REFERENCE<IObject> m_tObject;
-
+  MEMBER__REFERENCE(IObject, Object);
+  MEMBER(IObject::operations, operation);
+  MEMBER(IObject::modes, mode);
+  MEMBER(T_BOOLEAN, Inverse);
+  
   //! copy constructor
   CGuard(const CGuard & tGuard);
   //! assignment operator
@@ -32,7 +34,7 @@ private:
 
 public:
   //! constructor
-  CGuard(IObject & tObject, IObject::operations operation = IObject::WRITE, IObject::modes mode = IObject::BLOCKED);
+  CGuard(IObject & tObject, IObject::operations operation = IObject::WRITE, IObject::modes mode = IObject::BLOCKED, T_BOOLEAN bInverse = false);
   //! destructor
   virtual ~CGuard();
 }; // class CGuard
