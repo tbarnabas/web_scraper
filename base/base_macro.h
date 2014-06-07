@@ -23,78 +23,150 @@
   protected: \
     type m_ ## member; \
 
-#define MEMBER_GET_METHOD(type, member) \
+    
+#define PURE_VIRTUAL__MEMBER_GET_METHOD(type, member) \
   public: \
-    inline type Get ## member() const { \
+    virtual type Get ## member() const = 0;
+
+#define PURE_VIRTUAL__MEMBER_GETP_METHOD(type, member) \
+  public: \
+    virtual type * Get ## member() = 0;
+
+#define PURE_VIRTUAL__MEMBER_GETR_METHOD(type, member) \
+  public: \
+    virtual type & Get ## member() = 0;
+
+#define PURE_VIRTUAL__MEMBER_SET_METHOD(type, member) \
+  public: \
+    virtual void Set ## member(const type & value) = 0;
+
+#define PURE_VIRTUAL__MEMBER_SETP_METHOD(type, member) \
+  public: \
+    virtual void Set ## member(const type * value) = 0;
+    
+    
+#define VIRTUAL__MEMBER_GET_METHOD(type, member) \
+  public: \
+    virtual type Get ## member() const { \
       return (m_ ## member); \
     };
 
-#define MEMBER_GETP_METHOD(type, member) \
+#define VIRTUAL__MEMBER_GETP_METHOD(type, member) \
   public: \
-    inline type * Get ## member() { \
+    virtual type * Get ## member() { \
       return (m_ ## member); \
     };
 
-#define MEMBER_GETR_METHOD(type, member) \
+#define VIRTUAL__MEMBER_GETR_METHOD(type, member) \
   public: \
-    inline type & Get ## member() { \
+    virtual type & Get ## member() { \
       return (m_ ## member); \
     };
 
-#define MEMBER_SET_METHOD(type, member) \
+#define VIRTUAL__MEMBER_SET_METHOD(type, member) \
   public: \
-    inline void Set ## member(const type & value) { \
+    virtual void Set ## member(const type & value) { \
       m_ ## member = value; \
     };
 
-#define MEMBER_SETP_METHOD(type, member) \
+#define VIRTUAL__MEMBER_SETP_METHOD(type, member) \
   public: \
-    inline void Set ## member(const type * value) { \
+    virtual void Set ## member(const type * value) { \
       m_ ## member = value; \
     };
 
+    
 #define MEMBER(type, member) \
   MEMBER_DEFINITION(type, member)
 
 #define MEMBER__REFERENCE(type, member) \
   MEMBER_DEFINITION(REFERENCE<type >, member)
 
+
 #define MEMBER_GET_SET(type, member) \
   MEMBER_DEFINITION(type, member) \
-  MEMBER_GET_METHOD(type, member) \
-  MEMBER_SET_METHOD(type, member)
+  VIRTUAL__MEMBER_GET_METHOD(type, member) \
+  VIRTUAL__MEMBER_SET_METHOD(type, member)
 
 #define MEMBER_GETR_SET(type, member) \
   MEMBER_DEFINITION(type, member) \
-  MEMBER_GETR_METHOD(type, member) \
-  MEMBER_SET_METHOD(type, member)
+  VIRTUAL__MEMBER_GETR_METHOD(type, member) \
+  VIRTUAL__MEMBER_SET_METHOD(type, member)
 
-#define MEMBER_GET_SET__REFERENCE(type, member) \
+#define MEMBER_GETP_SETP__REFERENCE(type, member) \
   MEMBER_DEFINITION(REFERENCE<type >, member) \
-  MEMBER_GETP_METHOD(type, member) \
-  MEMBER_SETP_METHOD(type, member)
+  VIRTUAL__MEMBER_GETP_METHOD(type, member) \
+  VIRTUAL__MEMBER_SETP_METHOD(type, member)
 
+#define MEMBER_GETR_SETP__REFERENCE(type, member) \
+  MEMBER_DEFINITION(REFERENCE<type >, member) \
+  VIRTUAL__MEMBER_GETR_METHOD(type, member) \
+  VIRTUAL__MEMBER_SETP_METHOD(type, member)
+
+  
 #define MEMBER_GET(type, member) \
   MEMBER_DEFINITION(type, member) \
-  MEMBER_GET_METHOD(type, member)
+  VIRTUAL__MEMBER_GET_METHOD(type, member)
 
 #define MEMBER_GETR(type, member) \
   MEMBER_DEFINITION(type, member) \
-  MEMBER_GETR_METHOD(type, member)
+  VIRTUAL__MEMBER_GETR_METHOD(type, member)
 
-#define MEMBER_GET__REFERENCE(type, member) \
+#define MEMBER_GETP__REFERENCE(type, member) \
   MEMBER_DEFINITION(REFERENCE<type >, member) \
-  MEMBER_GETP_METHOD(type, member)
+  VIRTUAL__MEMBER_GETP_METHOD(type, member)
 
+#define MEMBER_GETR__REFERENCE(type, member) \
+  MEMBER_DEFINITION(REFERENCE<type >, member) \
+  VIRTUAL__MEMBER_GETR_METHOD(type, member)
+
+ 
 #define MEMBER_SET(type, member) \
   MEMBER_DEFINITION(type, member) \
-  MEMBER_SET_METHOD(type, member)
+  VIRTUAL__MEMBER_SET_METHOD(type, member)
 
-#define MEMBER_SET__REFERENCE(type, member) \
+#define MEMBER_SETP__REFERENCE(type, member) \
   MEMBER_DEFINITION(REFERENCE<type >, member) \
-  MEMBER_SETP_METHOD(type, member)
+  VIRTUAL__MEMBER_SETP_METHOD(type, member)
 
 
+#define IMEMBER_GET_SET(type, member) \
+  PURE_VIRTUAL__MEMBER_GET_METHOD(type, member) \
+  PURE_VIRTUAL__MEMBER_SET_METHOD(type, member)
+
+#define IMEMBER_GETR_SET(type, member) \
+  PURE_VIRTUAL__MEMBER_GETR_METHOD(type, member) \
+  PURE_VIRTUAL__MEMBER_SET_METHOD(type, member)
+
+#define IMEMBER_GETP_SETP__REFERENCE(type, member) \
+  PURE_VIRTUAL__MEMBER_GETP_METHOD(type, member) \
+  PURE_VIRTUAL__MEMBER_SETP_METHOD(type, member)
+
+#define IMEMBER_GETR_SET__REFERENCE(type, member) \
+  PURE_VIRTUAL__MEMBER_GETR_METHOD(type, member) \
+  PURE_VIRTUAL__MEMBER_SETP_METHOD(type, member)
+
+  
+#define IMEMBER_GET(type, member) \
+  PURE_VIRTUAL__MEMBER_GET_METHOD(type, member)
+
+#define IMEMBER_GETR(type, member) \
+  PURE_VIRTUAL__MEMBER_GETR_METHOD(type, member)
+
+#define IMEMBER_GETP__REFERENCE(type, member) \
+  PURE_VIRTUAL__MEMBER_GETP_METHOD(type, member)
+
+#define IMEMBER_GETR__REFERENCE(type, member) \
+  PURE_VIRTUAL__MEMBER_GETR_METHOD(type, member)
+
+ 
+#define IMEMBER_SET(type, member) \
+  PURE_VIRTUAL__MEMBER_SET_METHOD(type, member)
+
+#define IMEMBER_SETP__REFERENCE(type, member) \
+  PURE_VIRTUAL__MEMBER_SETP_METHOD(type, member)
+
+  
 /////////////////////////////////////////////////////////////////////////////
 // exception handling
 

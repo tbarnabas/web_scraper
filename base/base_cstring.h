@@ -27,11 +27,11 @@ private:
   T_CHAR * m_pString;
 
   //! copy string
-  static void STATIC_strcpy(T_CHAR * pDestination, const T_CHAR * pSource, T_ULONG uLength);
+  static void __strcpy(T_CHAR * pDestination, const T_CHAR * pSource, T_ULONG uLength);
   //! get length
-  static T_ULONG STATIC_strlen(const T_CHAR * pString);
+  static T_ULONG __strlen(const T_CHAR * pString);
   //! compare strings
-  static T_INT STATIC_strcmp(const T_CHAR * pLeft, const T_CHAR * pRight);
+  static T_INT __strcmp(const T_CHAR * pLeft, const T_CHAR * pRight);
 
   //! construct
   void __construct(const T_CHAR * pString, T_ULONG uLength);
@@ -39,7 +39,6 @@ private:
   void __destruct();
 
 public:
-  //! length
   MEMBER_GET(T_ULONG, Length);
 
 public:

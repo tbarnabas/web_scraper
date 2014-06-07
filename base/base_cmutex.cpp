@@ -10,7 +10,9 @@
 #if ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
 
 extern "C" {
+
 extern int pthread_mutexattr_settype(pthread_mutexattr_t *, int);
+
 }
 
 #endif // #if ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
@@ -83,7 +85,8 @@ CMutex::~CMutex() {
 
 
 /////////////////////////////////////////////////////////////////////////////
-CMutex::CMutex(const CMutex & tMutex) {
+CMutex::CMutex(const CMutex & tMutex) :
+  CObject(tMutex) {
   __construct();
 } // CMutex
 
@@ -91,13 +94,14 @@ CMutex::CMutex(const CMutex & tMutex) {
 /////////////////////////////////////////////////////////////////////////////
 CMutex & CMutex::operator=(const CMutex & tMutex) {
   __destruct();
+  CObject::operator=(tMutex);
   __construct();
   return (* this);
 } // operator=
 
 
 /////////////////////////////////////////////////////////////////////////////
-void CMutex::Acquire() {
+void CMutex::Acquire(IObject::operations operation, IObject::modes mode) {
     
 #if (OS_FAMILY == OSF_WINDOWS)
     

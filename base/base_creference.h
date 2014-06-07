@@ -14,17 +14,14 @@
 
 #include "base_configuration.h"
 
-#include "base_cmutex.h"
-#include "base_cobject.h"
-
 namespace BASE {
 
 #define REFERENCE ::BASE::CReference
 
-//! create module
-void STATIC_CReference__Create();
-//! destroy module
-void STATIC_CReference__Destroy();
+//! create class environment
+void CReference__Create();
+//! destroy class environment
+void CReference__Destroy();
 
 template <class T>
 class CReference {
@@ -65,7 +62,7 @@ public:
   T_BOOLEAN IsValid() const;
 
   //! create
-  CReference<T> & Create(T * pObject, ::BASE::CObject::storages storage = ::BASE::CObject::DYNAMIC);
+  CReference<T> & Create(T * pObject, storages storage = DYNAMIC);
   //! create
   CReference<T> & Create(T & tObject);
 }; // class CReference
@@ -81,7 +78,10 @@ public:
 
 namespace BASE {
 
-extern ::BASE::CMutex * GLOBAL_CReference__pMutex;
+//! lock reference mutex
+void CReference__tMutex__Acquire();
+//! unlock reference mutex
+void CReference__tMutex__Release();
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -89,9 +89,9 @@ template <class T>
 void CReference<T>::__construct(T * pObject) {
   m_pObject = pObject;
   if (m_pObject != NULL) {
-    GLOBAL_CReference__pMutex->Acquire();
+    CReference__tMutex__Acquire();
     m_pObject->SetReferences(m_pObject->GetReferences() + 1);
-    GLOBAL_CReference__pMutex->Release();
+    CReference__tMutex__Release();
   }
 } // __construct
 
@@ -102,13 +102,13 @@ void CReference<T>::__destruct() {
   if (m_pObject != NULL) {
     T_ULONG uReferences = 0;
 
-    GLOBAL_CReference__pMutex->Acquire();
+    CReference__tMutex__Acquire();
     uReferences = m_pObject->GetReferences() - 1;
     m_pObject->SetReferences(uReferences);
-    GLOBAL_CReference__pMutex->Release();
+    CReference__tMutex__Release();
 
     if (uReferences == 0) {
-      if (m_pObject->GetStorage() == ::BASE::CObject::DYNAMIC) {
+      if (m_pObject->GetStorage() == DYNAMIC) {
         delete m_pObject;
       }
       m_pObject = NULL;
@@ -202,7 +202,7 @@ T_BOOLEAN CReference<T>::IsValid() const {
 
 /////////////////////////////////////////////////////////////////////////////
 template <class T>
-CReference<T> & CReference<T>::Create(T * pObject, ::BASE::CObject::storages storage) {
+CReference<T> & CReference<T>::Create(T * pObject, storages storage) {
   __destruct();
   pObject->SetStorage(storage);
   __construct(pObject);

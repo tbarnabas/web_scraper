@@ -18,12 +18,12 @@
 
 namespace WSR {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::ELoopThread, EReader)
+DERIVE_EXCEPTION_BEGIN(::THREAD::EThread, EReader)
   UNABLE_TO_OPEN
 DERIVE_EXCEPTION_END(EReader);
   
 class WSR_EXPORT_IMPORT CReader :
-  public ::THREAD::CLoopThread {
+  public ::THREAD::CThread {
 private:
   MEMBER(T_ULONG, Scrapers);
   MEMBER(::std::ifstream, Input);
@@ -36,8 +36,8 @@ private:
   CReader & operator=(const CReader & tReader);
 
 protected:
-  //! loop
-  virtual void Loop();
+  //! execute
+  virtual void Execute();
 
 public:
   //! constructor

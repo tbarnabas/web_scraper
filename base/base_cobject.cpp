@@ -13,6 +13,7 @@ namespace BASE {
 void CObject::__construct() {
   m_Storage = STATIC;
   m_References = 0;
+  m_Immediate = false;
 } // CObject
 
 
@@ -38,5 +39,54 @@ CObject & CObject::operator=(const CObject & tObject) {
   // all data members are unique per instance
   return (* this);
 } // operator=
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Shutdown(T_BOOLEAN bImmediate) {
+  m_Immediate = bImmediate;
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Shutdown(bImmediate);
+  }
+} // Shutdown
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Acquire(IObject::operations operation, IObject::modes mode) {
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Acquire(operation, mode);
+  }
+} // Acquire
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Release() {
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Release();
+  }
+} // Release
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Signal() {
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Signal();
+  }
+} // Signal
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Broadcast() {
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Broadcast();
+  }
+} // Broadcast
+
+
+/////////////////////////////////////////////////////////////////////////////
+void CObject::Wait(const T_TIME & tTimeOut) {
+  if (m_Synch.IsValid() == true) {
+    m_Synch->Wait(tTimeOut);
+  }
+} // Wait
 
 } // namespace BASE

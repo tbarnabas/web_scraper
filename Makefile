@@ -1,10 +1,11 @@
 
 BINARY = wsr
 CFLAGS += -DPROCESSOR_ARCHITECTURE=PAF_X86 -DOPERATING_SYSTEM=OSF_LINUX
-VPATH += base datastructure resource thread
+VPATH += base datastructure resource
 
 SOURCES = \
   base.cpp \
+  base_cguard.cpp \
   base_cipaddress.cpp \
   base_cmessage.cpp \
   base_cmutex.cpp \
@@ -22,12 +23,8 @@ SOURCES = \
   resource.cpp \
   resource_capplication.cpp \
   \
-  thread.cpp \
   thread_ccondition.cpp \
-  thread_cguard.cpp \
   thread_cloopthread.cpp \
-  thread_cmutex.cpp \
-  thread_cobject.cpp \
   thread_cthread.cpp \
   \
   wsr.cpp \

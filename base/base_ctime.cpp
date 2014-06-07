@@ -10,15 +10,15 @@
 namespace BASE {
 
 /////////////////////////////////////////////////////////////////////////////
-CTime CTime::STATIC_GetLengthOf(times base, T_ULONG uYear, T_ULONG uMonth) {
+CTime CTime::GetLengthOf(times base, T_ULONG uYear, T_ULONG uMonth) {
   CTime tResult;
 
   switch (base) {
   case YEAR : {
       if ((((uYear % 4) == 0) && ((uYear % 100) != 0)) || (((uYear % 4) == 0) && ((uYear % 400) == 0))) {
-        tResult = CTime(366 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+        tResult = CTime(366 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       } else {
-        tResult = CTime(365 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+        tResult = CTime(365 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       }
     break;
   }
@@ -31,21 +31,21 @@ CTime CTime::STATIC_GetLengthOf(times base, T_ULONG uYear, T_ULONG uMonth) {
     case 8 :
     case 10 :
     case 12 : {
-      tResult = CTime(31 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+      tResult = CTime(31 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       break;
     }
     case 4 :
     case 6 :
     case 9 :
     case 11 : {
-      tResult = CTime(30 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+      tResult = CTime(30 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       break;
     }
     case 2 : {
       if ((((uYear % 4) == 0) && ((uYear % 100) != 0)) || (((uYear % 4) == 0) && ((uYear % 400) == 0))) {
-        tResult = CTime(29 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+        tResult = CTime(29 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       } else {
-        tResult = CTime(28 * T_TIME_TO_SEC(STATIC_GetLengthOf(DAY)));
+        tResult = CTime(28 * T_TIME_TO_SEC(GetLengthOf(DAY)));
       }
       break;
     }
@@ -75,15 +75,15 @@ CTime CTime::STATIC_GetLengthOf(times base, T_ULONG uYear, T_ULONG uMonth) {
   }
 
   return (tResult);
-} // STATIC_GetLengthOf 
+} // GetLengthOf 
 
 
 /////////////////////////////////////////////////////////////////////////////
-CInterval<CTime> CTime::STATIC_GetPartOf(T_ULONG uCount, times part, times base, T_ULONG uYear, T_ULONG uMonth) {
+CInterval<CTime> CTime::GetPartOf(T_ULONG uCount, times part, times base, T_ULONG uYear, T_ULONG uMonth) {
   CInterval<CTime> tResult;
 
-  T_ULONG uPartLength = T_TIME_TO_SEC(STATIC_GetLengthOf(part, uYear, uMonth));
-  T_ULONG uBaseLength = T_TIME_TO_SEC(STATIC_GetLengthOf(base, uYear, uMonth));
+  T_ULONG uPartLength = T_TIME_TO_SEC(GetLengthOf(part, uYear, uMonth));
+  T_ULONG uBaseLength = T_TIME_TO_SEC(GetLengthOf(base, uYear, uMonth));
 
   if ((uPartLength * uCount) <= uBaseLength) {
     tResult.SetBegin(CTime(uPartLength * (uCount - 1)));
@@ -91,11 +91,11 @@ CInterval<CTime> CTime::STATIC_GetPartOf(T_ULONG uCount, times part, times base,
   }
 
   return (tResult);
-} // STATIC_GetPartOf
+} // GetPartOf
 
 
 /////////////////////////////////////////////////////////////////////////////
-CTime CTime::STATIC_GetCurrent() {
+CTime CTime::GetCurrent() {
   CTime tResult;
 
 #if (PA_FAMILY == PAF_X86)
@@ -129,7 +129,7 @@ CTime CTime::STATIC_GetCurrent() {
 #endif
   
   return (tResult);
-} // STATIC_GetCurrent
+} // GetCurrent
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -462,7 +462,7 @@ void CTime::Trim(times base) {
 
 /////////////////////////////////////////////////////////////////////////////
 CTime CTime::GetElapsed() const {
-  return (STATIC_GetCurrent() - (* this));
+  return (GetCurrent() - (* this));
 } // GetElapsed
 
 

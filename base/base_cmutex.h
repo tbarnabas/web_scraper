@@ -17,9 +17,12 @@
 
 #include "base_configuration.h"
 
+#include "base_cobject.h"
+
 namespace BASE {
 
-class BASE_EXPORT_IMPORT CMutex {
+class BASE_EXPORT_IMPORT CMutex : 
+  virtual public CObject {
 protected:
 
 #if (OS_FAMILY == OSF_WINDOWS)
@@ -57,7 +60,7 @@ public:
   CMutex & operator=(const CMutex & tMutex);
 
   //! acquire
-  void Acquire();
+  virtual void Acquire(IObject::operations operation = IObject::WRITE, IObject::modes mode = IObject::BLOCKED);
   //! release
   void Release();
 }; // class BASE_EXPORT_IMPORT CMutex

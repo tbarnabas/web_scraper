@@ -12,15 +12,15 @@ namespace BASE {
 #define __BASE__CString__BUFFER_SIZE 128
 
 /////////////////////////////////////////////////////////////////////////////
-void CString::STATIC_strcpy(T_CHAR * pDestination, const T_CHAR * pSource, T_ULONG uLength) {
+void CString::__strcpy(T_CHAR * pDestination, const T_CHAR * pSource, T_ULONG uLength) {
   for (T_ULONG i = 0; i < uLength; i++) {
     pDestination[i] = pSource[i];
   }
-} // STATIC_strcpy
+} // __strcpy
 
 
 /////////////////////////////////////////////////////////////////////////////
-T_ULONG CString::STATIC_strlen(const T_CHAR * pString) {
+T_ULONG CString::__strlen(const T_CHAR * pString) {
   T_ULONG uResult = 0;
 
   if (pString != NULL) {
@@ -30,11 +30,11 @@ T_ULONG CString::STATIC_strlen(const T_CHAR * pString) {
   }
 
   return (uResult);
-} // STATIC_strlen
+} // __strlen
 
 
 /////////////////////////////////////////////////////////////////////////////
-T_INT CString::STATIC_strcmp(const T_CHAR * pLeft, const T_CHAR * pRight) {
+T_INT CString::__strcmp(const T_CHAR * pLeft, const T_CHAR * pRight) {
   T_INT iResult = 0;
 
   if ((pLeft != NULL) && (pRight != NULL)) {
@@ -68,7 +68,7 @@ T_INT CString::STATIC_strcmp(const T_CHAR * pLeft, const T_CHAR * pRight) {
   }
 
   return (iResult);
-} // STATIC_strcmp
+} // __strcmp
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ void CString::__construct(const T_CHAR * pString, T_ULONG uLength) {
   if (pString != NULL) {
     m_Length = uLength;
     m_pString = (T_CHAR *)malloc((m_Length + 1) * sizeof(T_CHAR));
-    STATIC_strcpy(m_pString, pString, m_Length);
+    __strcpy(m_pString, pString, m_Length);
     m_pString[m_Length] = 0;
   } else {
     m_Length = 0;
@@ -97,7 +97,7 @@ void CString::__destruct() {
 
 /////////////////////////////////////////////////////////////////////////////
 CString::CString(const T_CHAR * pString, T_ULONG uLength) {
-  __construct(pString, (uLength == 0) ? STATIC_strlen(pString) : uLength);
+  __construct(pString, (uLength == 0) ? __strlen(pString) : uLength);
 } // CString
 
 
@@ -122,7 +122,7 @@ CString::CString(T_ULONG uValue) {
   __T_CHAR pBuffer[__BASE__CString__BUFFER_SIZE];
 
   __BASE__CString__SPRINTF(pBuffer, "%d", uValue);
-  __construct(pBuffer, STATIC_strlen(pBuffer));
+  __construct(pBuffer, __strlen(pBuffer));
 } // CString
 
 
@@ -131,7 +131,7 @@ CString::CString(T_LONG iValue) {
   __T_CHAR pBuffer[__BASE__CString__BUFFER_SIZE];
 
   __BASE__CString__SPRINTF(pBuffer, "%d", iValue);
-  __construct(pBuffer, STATIC_strlen(pBuffer));
+  __construct(pBuffer, __strlen(pBuffer));
 } // CString
 
 
@@ -141,7 +141,7 @@ CString::CString(T_DOUBLE dValue) {
   __T_CHAR pBuffer[__BASE__CString__BUFFER_SIZE];
 
   __BASE__CString__SPRINTF(pBuffer, "%f", dValue);
-  __construct(pBuffer, STATIC_strlen(pBuffer));
+  __construct(pBuffer, __strlen(pBuffer));
 } // CString
 
 #elif (PA_FAMILY == PAF_AVR)
@@ -201,7 +201,7 @@ T_BOOLEAN CString::operator==(const CString & tString) const {
   T_BOOLEAN bResult = false;
 
   if (m_Length == tString.m_Length) {
-    if (STATIC_strcmp(m_pString, tString.m_pString) == 0) {
+    if (__strcmp(m_pString, tString.m_pString) == 0) {
       bResult = true;
     }
   }
@@ -232,7 +232,7 @@ T_BOOLEAN CString::operator!=(const T_CHAR * pString) const {
 T_BOOLEAN CString::operator<(const CString & tString) const {
   T_BOOLEAN bResult = false;
 
-  if (STATIC_strcmp(m_pString, tString.m_pString) == -1) {
+  if (__strcmp(m_pString, tString.m_pString) == -1) {
     bResult = true;
   }
 
@@ -247,8 +247,8 @@ CString CString::operator+(const CString & tString) const {
   sResult.m_Length = m_Length + tString.m_Length;
   if (sResult.m_Length != 0) {
     sResult.m_pString = (T_CHAR *)malloc((sResult.m_Length + 1) * sizeof(T_CHAR));
-    STATIC_strcpy(sResult.m_pString, m_pString, m_Length);
-    STATIC_strcpy(sResult.m_pString + m_Length, tString.m_pString, tString.m_Length);
+    __strcpy(sResult.m_pString, m_pString, m_Length);
+    __strcpy(sResult.m_pString + m_Length, tString.m_pString, tString.m_Length);
     sResult.m_pString[sResult.m_Length] = '\0';
   }
 

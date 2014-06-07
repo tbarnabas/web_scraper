@@ -42,7 +42,9 @@ void CApplication::Initialize() {
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Shutdown(T_BOOLEAN bImmediate) {
+printf("APP SHUTDOWN - 1\n");
   ::THREAD::CLoopThread::Shutdown(bImmediate);
+printf("APP SHUTDOWN - 2\n");
   {
     THREADGUARD __tGuard(m_ObjectManager);
     m_ObjectManager.Shutdown(bImmediate);

@@ -20,9 +20,9 @@ template <class T, class L = T_ULONG>
 class CArray {
 public:
   //! copy memory area
-  static void STATIC_Copy(const T * pSource, T * pDestination, L uSize);
+  static void Copy(const T * pSource, T * pDestination, L uSize);
   //! zero memory area
-  static void STATIC_Zero(T * pDestination, L uSize);
+  static void Zero(T * pDestination, L uSize);
 
 private:
   //! pointer to elements
@@ -85,22 +85,22 @@ namespace BASE {
 
 /////////////////////////////////////////////////////////////////////////////
 template <class T, class L>
-void CArray<T, L>::STATIC_Copy(const T * pSource, T * pDestination, L uSize) {
+void CArray<T, L>::Copy(const T * pSource, T * pDestination, L uSize) {
   while (uSize > 0) {
     uSize = uSize - 1;
     pDestination[uSize] = pSource[uSize];
   }
-} // STATIC_Copy
+} // Copy
 
 
 /////////////////////////////////////////////////////////////////////////////
 template <class T, class L>
-void CArray<T, L>::STATIC_Zero(T * pDestination, L uSize) {
+void CArray<T, L>::Zero(T * pDestination, L uSize) {
   while (uSize > 0) {
     uSize = uSize - 1;
     pDestination[uSize] = 0;
   }
-} // STATIC_Zero
+} // Zero
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ void CArray<T, L>::__construct(const T * pElements, L uSize) {
     m_pElements = new T[uSize];
 
     if (pElements != NULL) {
-      STATIC_Copy(pElements, m_pElements, uSize);
+      Copy(pElements, m_pElements, uSize);
     }
   }
 } // __construct
@@ -235,7 +235,7 @@ void CArray<T, L>::SetSize(L uSize, T_BOOLEAN bKeep) {
     __destruct();
     __construct(NULL, uSize);
 
-    STATIC_Copy(tArray.m_pElements, m_pElements, tArray.GetSize());
+    Copy(tArray.m_pElements, m_pElements, tArray.GetSize());
   } else {
     __destruct();
     __construct(NULL, uSize);
@@ -266,7 +266,7 @@ T_BOOLEAN CArray<T, L>::Exists(const T & tElement) const {
 template <class T, class L>
 void CArray<T, L>::Append(const T * pElements, L uSize) {
   SetSize(m_uSize + uSize, true);
-  STATIC_Copy(pElements, m_pElements + m_uSize - uSize, uSize);
+  Copy(pElements, m_pElements + m_uSize - uSize, uSize);
 } // CArray
 
 } // namespace BASE

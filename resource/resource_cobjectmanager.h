@@ -101,7 +101,9 @@ void CObjectManager<K>::Shutdown(T_BOOLEAN bImmediate) {
 
   for (i = uSize; i > 0 ; i--) {
     REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i - 1);
+printf("--%d object shutdown\n", i);
     IGNORE_EXCEPTION(tObject->Shutdown(bImmediate));
+printf("--object shutdowned\n");
   }
 } // Shutdown
 

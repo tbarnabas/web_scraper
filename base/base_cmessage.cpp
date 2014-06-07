@@ -10,7 +10,7 @@
 namespace BASE {
 
 /////////////////////////////////////////////////////////////////////////////
-CMessage::CMessage(const ::BASE::CTime & tTime, const T_STRING & sModule, const T_STRING & sClassPath, const T_STRING & sMethod, T_ULONG uLevel, T_ULONG uCode, const T_STRING & sMessage) :
+CMessage::CMessage(const T_TIME & tTime, const T_STRING & sModule, const T_STRING & sClassPath, const T_STRING & sMethod, T_ULONG uLevel, T_ULONG uCode, const T_STRING & sMessage) :
   m_Time(tTime),
   m_Module(sModule),
   m_ClassPath(sClassPath),

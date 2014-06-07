@@ -17,6 +17,15 @@
 #include "base_include.h"
 #include "base_macro.h"
 
+namespace BASE {
+
+//! enumeration for different storage types
+enum storages {
+  STATIC,
+  DYNAMIC };
+
+} // namespace BASE
+
 /////////////////////////////////////////////////////////////////////////////
 // export/import
 

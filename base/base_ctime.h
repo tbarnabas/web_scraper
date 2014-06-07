@@ -38,11 +38,11 @@ public:
     SEC };
 
   //! get length of times
-  static CTime STATIC_GetLengthOf(times base, T_ULONG uYear = 0, T_ULONG uMonth = 0);
+  static CTime GetLengthOf(times base, T_ULONG uYear = 0, T_ULONG uMonth = 0);
   //! get part of times
-  static CInterval<CTime> STATIC_GetPartOf(T_ULONG uCount, times part, times base, T_ULONG uYear = 0, T_ULONG uMonth = 0);
+  static CInterval<CTime> GetPartOf(T_ULONG uCount, times part, times base, T_ULONG uYear = 0, T_ULONG uMonth = 0);
   //! get current time
-  static CTime STATIC_GetCurrent();
+  static CTime GetCurrent();
 
 private:
   //! convert to date

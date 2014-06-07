@@ -19,15 +19,20 @@
 #include "base_configuration.h"
 
 #include "base_carray.h"
+//#include "base_ccondition.h"
+#include "base_cguard.h"
 #include "base_cinterval.h"
 #include "base_cipaddress.h"
+//#include "base_cloopthread.h"
 #include "base_cmessage.h"
 #include "base_cmutex.h"
 #include "base_cobject.h"
 #include "base_creference.h"
 #include "base_cstring.h"
+//#include "base_cthread.h"
 #include "base_ctime.h"
 #include "base_eexception.h"
+#include "base_iobject.h"
 
 #if (DE_FAMILY == DEF_ARDUINO)
 
@@ -89,7 +94,7 @@ void setqword(T_BYTE * pAddress, T_QWORD value, T_BOOLEAN bBigEndian = false);
 //! dump memory space
 void Dump(const T_BYTE * pAddress, T_ULONG uLength, T_BOOLEAN bHex = true, T_ULONG uBytesPerLine = __BASE__Dump_BYTES_PER_LINE);
 //! dump memory space
-void Dump(const ::BASE::CArray<T_BYTE> * pArray, T_BOOLEAN bHex = true, T_ULONG uBytesPerLine = __BASE__Dump_BYTES_PER_LINE);
+void Dump(const CArray<T_BYTE> * pArray, T_BOOLEAN bHex = true, T_ULONG uBytesPerLine = __BASE__Dump_BYTES_PER_LINE);
 
 } // namespace BASE
 

@@ -8,70 +8,22 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-// PLATFORM DEPENDENT
-
 #pragma once
 #ifndef _BASE_COBJECT
 #define _BASE_COBJECT
 
 #include "base_configuration.h"
 
+#include "base_iobject.h"
+#include "base_creference.h"
 #include "base_eexception.h"
 
 namespace BASE {
 
-DERIVE_ABSTRACT_EXCEPTION(::BASE::EException, EObject);
+DERIVE_ABSTRACT_EXCEPTION(EException, EObject);
 
-class BASE_EXPORT_IMPORT CObject {
-public:
-  //! enumeration for different storage types
-  enum storages {
-    STATIC,
-    DYNAMIC };
-  //! convert storages enumeration to string
-  ENUMERATION_TO_STRING(storages,
-    CASE_TO_STRING(STATIC)
-    CASE_TO_STRING(DYNAMIC));
-  //! convert string to storages enumeration
-  STRING_TO_ENUMERATION(storages, 
-    CASE_TO_ENUMERATION(STATIC)
-    CASE_TO_ENUMERATION(DYNAMIC));
-
-  //! enumeration for different operation types
-  enum operations {
-    READ,
-    WRITE };
-  //! convert operations enumeration to string
-  ENUMERATION_TO_STRING(operations,
-    CASE_TO_STRING(READ)
-    CASE_TO_STRING(WRITE));
-  //! convert string to operations enumeration
-  STRING_TO_ENUMERATION(operations,
-    CASE_TO_ENUMERATION(READ)
-    CASE_TO_ENUMERATION(WRITE));
-
-  //! enumeration for different synchronization types
-  enum synchronizations {
-    BLOCKED,
-    BLOCKED_UNTIL_SEND,
-    BLOCKED_UNTIL_RECEIVE,
-    BLOCKED_UNTIL_PROCESS,
-    NON_BLOCKED };
-  //! convert synchronizations enumeration to string
-  ENUMERATION_TO_STRING(synchronizations,
-    CASE_TO_STRING(BLOCKED)
-    CASE_TO_STRING(BLOCKED_UNTIL_SEND)
-    CASE_TO_STRING(BLOCKED_UNTIL_RECEIVE)
-    CASE_TO_STRING(BLOCKED_UNTIL_PROCESS)
-    CASE_TO_STRING(NON_BLOCKED));
-  //! convert string to synchronizations enumeration
-  STRING_TO_ENUMERATION(synchronizations,
-    CASE_TO_ENUMERATION(BLOCKED)
-    CASE_TO_ENUMERATION(BLOCKED_UNTIL_SEND)
-    CASE_TO_ENUMERATION(BLOCKED_UNTIL_RECEIVE)
-    CASE_TO_ENUMERATION(BLOCKED_UNTIL_PROCESS)
-    CASE_TO_ENUMERATION(NON_BLOCKED));
-
+class BASE_EXPORT_IMPORT CObject :
+  virtual public IObject {
 private:
   //! construct
   void __construct();
@@ -79,6 +31,8 @@ private:
 public:
   MEMBER_GET_SET(storages, Storage);
   MEMBER_GET_SET(T_ULONG, References);
+  MEMBER_GETP_SETP__REFERENCE(IObject, Synch);
+  MEMBER_GET(T_BOOLEAN, Immediate);
 
 public:
   //! constructor
@@ -94,9 +48,20 @@ public:
   //! initialize
   virtual void Initialize() {}
   //! shutdown
-  virtual void Shutdown(T_BOOLEAN bImmediate = false) {}
+  virtual void Shutdown(T_BOOLEAN bImmediate = false);
   //! maintain
   virtual void Maintain() {}
+
+  //! acquire
+  virtual void Acquire(IObject::operations operation = IObject::WRITE, IObject::modes mode = IObject::BLOCKED);
+  //! release
+  virtual void Release();
+  //! send wakeup signal to one of waiting threads
+  virtual void Signal();
+  //! send wakeup signal to all of waiting threads
+  virtual void Broadcast();
+  //! waiting for wakeup signal
+  virtual void Wait(const T_TIME & tTimeOut = T_TIME());
 }; // class BASE_EXPORT_IMPORT CObject
 
 } // namespace BASE

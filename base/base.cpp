@@ -9,14 +9,18 @@
 
 #if (DE_FAMILY == DEF_ARDUINO)
 
-#include "base_eexception.cpp"
+#include "base_ccondition.h"
+#include "base_cguard.cpp"
 #include "base_cipaddress.cpp"
+#include "base_cloopthread.h"
 #include "base_cmessage.cpp"
 #include "base_cmutex.cpp"
 #include "base_cobject.cpp"
 #include "base_creference.cpp"
 #include "base_cstring.cpp"
+#include "base_cthread.h"
 #include "base_ctime.cpp"
+#include "base_eexception.cpp"
 
 /////////////////////////////////////////////////////////////////////////////
 void * operator new(size_t uSize) {
@@ -51,7 +55,7 @@ T_ULONG GLOBAL_uInitialized = 0;
 /////////////////////////////////////////////////////////////////////////////
 void Create() {
   if (GLOBAL_uCreated == 0) {
-    STATIC_CReference__Create();
+    CReference__Create();
   }
   GLOBAL_uCreated = GLOBAL_uCreated + 1;
 } // Create
@@ -79,7 +83,7 @@ void Destroy() {
   Shutdown(true);
   GLOBAL_uCreated = GLOBAL_uCreated - 1;
   if (GLOBAL_uCreated == 0) {
-    STATIC_CReference__Destroy();
+    CReference__Destroy();
   }
 } // Destroy
 
@@ -353,7 +357,7 @@ void Dump(const T_BYTE * pAddress, T_ULONG uLength, T_BOOLEAN bHex, T_ULONG uByt
 
 
 /////////////////////////////////////////////////////////////////////////////
-void Dump(const ::BASE::CArray<T_BYTE> * pArray, T_BOOLEAN bHex, T_ULONG uBytesPerLine) {
+void Dump(const CArray<T_BYTE> * pArray, T_BOOLEAN bHex, T_ULONG uBytesPerLine) {
   if (pArray != NULL) {
     Dump(pArray->GetElements(), pArray->GetSize(), bHex, uBytesPerLine);
   }
