@@ -24,7 +24,7 @@ void CReader::Loop() {
       }
     }
     
-    // send broadcast signal to consumers
+    // broadcast wakeup signal to all consumers
     m_Domains->Broadcast();
     
     printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());

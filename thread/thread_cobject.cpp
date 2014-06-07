@@ -83,6 +83,7 @@ void CObject::Wait(const T_TIME & tTimeOut) {
 
 /////////////////////////////////////////////////////////////////////////////
 void CObject::Interrupt() {
+printf("%p INTERRUPTED\n", this);
   if (m_Synchronizator.IsValid() == true) {
     m_Synchronizator->Interrupt();
   }

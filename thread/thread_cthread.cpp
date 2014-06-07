@@ -201,8 +201,15 @@ void CThread::Initialize() {
 
 /////////////////////////////////////////////////////////////////////////////
 void CThread::Shutdown(T_BOOLEAN bImmediate) {
+  THREADGUARD __tGuard(* this);
   ::THREAD::CObject::Interrupt();
+  if (m_Synchronizator.IsValid() == true) {
+    m_Synchronizator->Release();
+  }
   __destruct();
+  if (m_Synchronizator.IsValid() == true) {
+    m_Synchronizator->Acquire();
+  }
   ::THREAD::CObject::Shutdown(bImmediate);
 } // Shutdown
 
