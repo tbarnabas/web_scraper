@@ -18,20 +18,30 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EWriter);
+DERIVE_EXCEPTION_BEGIN(::THREAD::ELoopThread, EWriter)
+  UNABLE_TO_OPEN
+DERIVE_EXCEPTION_END(EWriter);
   
 class WSR_EXPORT_IMPORT CWriter :
   public ::THREAD::CLoopThread {
-public:
-  //! constructor
-  CWriter();
-  //! destructor
-  virtual ~CWriter();
+private:
+  MEMBER(::std::ofstream, Output);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
 
   //! copy constructor
   CWriter(const CWriter & tWriter);
   //! assignment operator
   CWriter & operator=(const CWriter & tWriter);
+
+protected:
+  //! loop
+  virtual void Loop();
+
+public:
+  //! constructor
+  CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails);
+  //! destructor
+  virtual ~CWriter();
 }; // class WSR_EXPORT_IMPORT CWriter
 
 } // namespace WSR

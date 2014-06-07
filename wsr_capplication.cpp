@@ -22,7 +22,13 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   
   // create a new reader
   m_Reader.Create(new ::WSR::CReader(uScrapers, sInput, uDepth, m_Domains));
+  m_Reader->SetSynchronizator(m_Domains->GetSynchronizator());
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Reader.__ptr());
+
+  // create a new writer
+  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Domains));
+  m_Writer->SetSynchronizator(m_Domains->GetSynchronizator());
+  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
 } // CApplication
 
 

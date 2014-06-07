@@ -18,4 +18,4 @@ $(BINARY) : $(OBJECTS)
 	$(CC) -o $(BINARY) $(OBJECTS) $(LIBS)
 
 clean:
-	-rm $(BINARY) *.o
+	-rm $(BINARY) $(CLEAN) *.o

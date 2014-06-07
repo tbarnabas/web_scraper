@@ -1,11 +1,7 @@
 
 BINARY = wsr
-
 CFLAGS += -DPROCESSOR_ARCHITECTURE=PAF_X86 -DOPERATING_SYSTEM=OSF_LINUX
-
 VPATH += base datastructure resource thread
-
-LIBS += -lpthread
 
 SOURCES = \
   base.cpp \
@@ -42,5 +38,8 @@ SOURCES = \
   wsr_cwriter.cpp \
   \
   main.cpp
+
+LIBS += -lpthread
+CLEAN += emails.txt
   
 include common.mk
