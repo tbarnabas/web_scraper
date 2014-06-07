@@ -17,5 +17,9 @@ OBJECTS = $(patsubst %.c, %.o, $(patsubst %.cpp, %.o, $(SOURCES)))
 $(BINARY) : $(OBJECTS)
 	$(CC) -o $(BINARY) $(OBJECTS) $(LIBS)
 
+install: $(OBJECTS)
+	$(CC) -o $(BINARY) $(OBJECTS) $(LIBS)
+	-rm $(CLEAN) *.o
+
 clean:
 	-rm $(BINARY) $(CLEAN) *.o

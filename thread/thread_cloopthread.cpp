@@ -32,23 +32,17 @@ void CLoopThread::Execute() {
 
     // loop
     IGNORE_EXCEPTION(Loop());
-printf("--1--\n");
+
     // acquire object
     ::THREAD::CObject::Acquire();
-printf("--2--\n");
 
     // waiting for timeout or exit condition
     if (::THREAD::CObject::GetInterrupted() == false) {
-printf("--3--\n");
       if (m_Synchronization == ::BASE::CObject::BLOCKED) {
-printf("--4--\n");
         IGNORE_EXCEPTION(::THREAD::CObject::Wait(m_TimeOut));
       }
     }
   } while (::THREAD::CObject::GetInterrupted() == false);
-printf("--5--\n");
-  
-  printf("THERAD %d EXITED\n", ::THREAD::CThread::STATIC_GetCurrentThreadId());
 } // Execute
 
 
