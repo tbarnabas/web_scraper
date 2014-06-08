@@ -18,17 +18,18 @@
 
 namespace WSR {
 
-DERIVE_EXCEPTION_BEGIN(::BASE::EThread, EReader)
+DERIVE_EXCEPTION_BEGIN(::BASE::ELoopThread, EReader)
   UNABLE_TO_OPEN
 DERIVE_EXCEPTION_END(EReader);
   
 class WSR_EXPORT_IMPORT CReader :
-  public ::BASE::CThread {
+  public ::BASE::CLoopThread {
 private:
   MEMBER(T_ULONG, Scrapers);
   MEMBER(::std::ifstream, Input);
   MEMBER(T_ULONG, Depth);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
+  MEMBER__REFERENCE(::BASE::IObject, Scrapers);
 
   //! copy constructor
   CReader(const CReader & tReader);
@@ -36,12 +37,12 @@ private:
   CReader & operator=(const CReader & tReader);
 
 protected:
-  //! execute
-  virtual void Execute();
+  //! loop
+  virtual void Loop();
 
 public:
   //! constructor
-  CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains);
+  CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * pScrapers);
   //! destructor
   virtual ~CReader();
 }; // class WSR_EXPORT_IMPORT CReader

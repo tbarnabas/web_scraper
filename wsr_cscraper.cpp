@@ -13,9 +13,6 @@ namespace WSR {
 void CScraper::Loop() {
   REFERENCE< ::WSR::CTask> tTask;
   
-  {
-    GUARD __tGuard(m_Domains);
-    
     // waiting for task
     while ((m_Domains->IsEmpty() == true) && (GetShutdown() == false)) {
       m_Domains->Wait();
@@ -23,22 +20,27 @@ void CScraper::Loop() {
     
     // pop task from queue
     tTask = m_Domains->Pop();
-
-    // send wakeup signal to producer
-    m_Reader->Signal();
   }
   
+  // send wakeup signal to producer
+  {
+    GUARD __tGuard(m_Reader);
+    m_Reader->Signal();
+  }
+
   if (tTask.IsValid() == true) {
     printf("%d processing ...\n", GetThreadId());
   }
 
+  // push task into queue
   {
     GUARD __tGuard(m_Emails);
-    
-    // push task into queue
     m_Emails->Push(tTask);
-    
-    // send wakeup signal to consumer
+  }
+  
+  // send wakeup signal to consumer
+  {
+    GUARD __tGuard(m_Writer);
     m_Writer->Signal();
   }
 } // Loop

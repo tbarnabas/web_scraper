@@ -13,6 +13,7 @@ SOURCES = \
   base_cmutex.cpp \
   base_cobject.cpp \
   base_creference.cpp \
+  base_csemaphore.cpp \
   base_cstring.cpp \
   base_cthread.cpp \
   base_ctime.cpp \

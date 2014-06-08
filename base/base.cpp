@@ -17,6 +17,7 @@
 #include "base_cmutex.cpp"
 #include "base_cobject.cpp"
 #include "base_creference.cpp"
+#include "base_csemaphore.h"
 #include "base_cstring.cpp"
 #include "base_cthread.h"
 #include "base_ctime.cpp"

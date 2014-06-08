@@ -151,8 +151,12 @@ void * CThread::__execute(void * pArg) {
 
   CThread * pThread = static_cast<CThread *>(pArg);
 
+  // run thread
   IGNORE_EXCEPTION(pThread->Construct());
-  IGNORE_EXCEPTION(pThread->Execute());
+  {
+    GUARD __tGuard(* pThread, IObject::WRITE, IObject::BLOCKED);
+    IGNORE_EXCEPTION(pThread->Execute());
+  }
   IGNORE_EXCEPTION(pThread->Destruct());
 
   return (0);

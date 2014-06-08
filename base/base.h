@@ -22,6 +22,7 @@
 #include "base_iloopthread.h"
 #include "base_imutex.h"
 #include "base_iobject.h"
+#include "base_isemaphore.h"
 #include "base_ithread.h"
 
 #include "base_carray.h"
@@ -34,6 +35,7 @@
 #include "base_cmutex.h"
 #include "base_cobject.h"
 #include "base_creference.h"
+#include "base_csemaphore.h"
 #include "base_cstring.h"
 #include "base_cthread.h"
 #include "base_ctime.h"

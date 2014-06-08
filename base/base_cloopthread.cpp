@@ -22,19 +22,16 @@ void CLoopThread::__construct(IObject::modes mode, const T_TIME & tTimeOut) {
 
 /////////////////////////////////////////////////////////////////////////////
 void CLoopThread::Execute() {
-  GUARD __tGuard(* this, IObject::WRITE, IObject::BLOCKED, false);
-
   do {
     // loop
-    {
-      GUARD __tGuard(* this, IObject::WRITE, IObject::BLOCKED, true);
-      IGNORE_EXCEPTION(Loop());
-    }
+    IGNORE_EXCEPTION(Loop());
 
     // waiting for timeout or exit condition
     if (GetShutdown() == false) {
       if (m_mode == IObject::BLOCKED) {
         IGNORE_EXCEPTION(Wait(m_TimeOut));
+      } else if (m_mode == IObject::NON_BLOCKED) {
+        GUARD __tGuard(* this, IObject::WRITE, IObject::BLOCKED, true);
       }
     }
   } while (GetShutdown() == false);
