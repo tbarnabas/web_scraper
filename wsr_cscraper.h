@@ -23,10 +23,10 @@ DERIVE_ABSTRACT_EXCEPTION(::BASE::ELoopThread, EScraper);
 class WSR_EXPORT_IMPORT CScraper :
   public ::BASE::CLoopThread {
 private:
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
   MEMBER__REFERENCE(::BASE::IObject, DomainsProducers);
   MEMBER__REFERENCE(::BASE::IObject, DomainsConsumers);
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Emails);
   MEMBER__REFERENCE(::BASE::IObject, EmailsProducers);
   MEMBER__REFERENCE(::BASE::IObject, EmailsConsumers);
 
@@ -36,12 +36,17 @@ private:
   CScraper & operator=(const CScraper & tScraper);
 
 protected:
+  //! download home page
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > DownloadHomePage(const T_STRING & sAddress);
+
+  //! process task
+  void Process(CTask * pTask);
   //! loop
   virtual void Loop();
-
+  
 public:
   //! constructor
-  CScraper(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
+  CScraper(::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper

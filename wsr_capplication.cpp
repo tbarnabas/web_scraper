@@ -16,7 +16,7 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   ::RESOURCE::CApplication(::BASE::IObject::BLOCKED) {
   REFERENCE< ::BASE::IObject> tDomainsProducers;
   REFERENCE< ::BASE::IObject> tDomainsConsumers;
-  REFERENCE< ::WSR::CScraper> tScraper;
+  REFERENCE<CScraper> tScraper;
   REFERENCE< ::BASE::IObject> tEmailsProducers;
   REFERENCE< ::BASE::IObject> tEmailsConsumers;
   
@@ -33,16 +33,16 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   tEmailsConsumers.Create(new ::BASE::CSemaphore(0));
   
   // create a new reader
-  m_Reader.Create(new ::WSR::CReader(sInput, uDepth, m_Domains, tDomainsProducers, tDomainsConsumers));
+  m_Reader.Create(new CReader(sInput, uDepth, m_Domains, tDomainsProducers, tDomainsConsumers));
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Reader.__ptr());
 
   // create a new writer
-  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails, tEmailsProducers, tEmailsConsumers));
+  m_Writer.Create(new CWriter(sOutput, m_Emails, tEmailsProducers, tEmailsConsumers));
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
 
   // create new scrapers
   for (T_ULONG i = 0; i < uScrapers; i++) {
-    tScraper.Create(new ::WSR::CScraper(m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
+    tScraper.Create(new CScraper(m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
     m_ObjectManager.Insert(m_ObjectManager.GetSize(), tScraper.__ptr());
   }
 } // CApplication

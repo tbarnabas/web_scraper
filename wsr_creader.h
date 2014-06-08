@@ -27,7 +27,7 @@ class WSR_EXPORT_IMPORT CReader :
 private:
   MEMBER(::std::ifstream, Input);
   MEMBER(T_ULONG, Depth);
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
   MEMBER__REFERENCE(::BASE::IObject, DomainsProducers);
   MEMBER__REFERENCE(::BASE::IObject, DomainsConsumers);
 
@@ -42,7 +42,7 @@ protected:
 
 public:
   //! constructor
-  CReader(const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers);
+  CReader(const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers);
   //! destructor
   virtual ~CReader();
 }; // class WSR_EXPORT_IMPORT CReader

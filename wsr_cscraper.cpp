@@ -11,7 +11,7 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CScraper::Loop() {
-  REFERENCE< ::WSR::CTask> tTask;
+  REFERENCE<CTask> tTask;
   
   m_DomainsConsumers->Acquire();
 
@@ -23,7 +23,7 @@ void CScraper::Loop() {
 
   m_DomainsProducers->Release();
   
-  printf("%d processing ...\n", GetThreadId());
+  IGNORE_EXCEPTION(Process(tTask));
 
   m_EmailsProducers->Acquire();
 
@@ -38,7 +38,13 @@ void CScraper::Loop() {
 
 
 /////////////////////////////////////////////////////////////////////////////
-CScraper::CScraper(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
+void CScraper::Process(CTask * pTask) {
+  REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tPage = GetHomePage(pTask->Get);
+} // Process
+
+
+/////////////////////////////////////////////////////////////////////////////
+CScraper::CScraper(::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
   ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
   m_Domains(pDomains),
   m_DomainsProducers(DomainsProducers),

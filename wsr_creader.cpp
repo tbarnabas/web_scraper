@@ -24,7 +24,7 @@ void CReader::Loop() {
       // enqueue domain
       {
         GUARD __tGuard(m_Domains); 
-        m_Domains->Push(REFERENCE< ::WSR::CTask>().Create(new ::WSR::CTask(sDomain.c_str(), m_Depth)));
+        m_Domains->Push(REFERENCE<CTask>().Create(new ::WSR::CTask(sDomain.c_str(), m_Depth)));
         uSize = m_Domains->GetSize();
       }
 

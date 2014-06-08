@@ -31,11 +31,11 @@ private:
   CApplication & operator=(const CApplication & tApplication);
 
 public:
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
+  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Emails);
 
-  MEMBER__REFERENCE(::WSR::CReader, Reader);
-  MEMBER__REFERENCE(::WSR::CWriter, Writer);
+  MEMBER__REFERENCE(CReader, Reader);
+  MEMBER__REFERENCE(CWriter, Writer);
 
 public:
   //! constructor

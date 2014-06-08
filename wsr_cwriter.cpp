@@ -11,7 +11,7 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CWriter::Loop() {
-  REFERENCE< ::WSR::CTask> tTask;
+  REFERENCE<CTask> tTask;
   
   m_EmailsConsumers->Acquire();
 
@@ -26,11 +26,13 @@ void CWriter::Loop() {
   // write output
   m_Output << tTask->GetAddress() << ::std::endl;
   m_Output.flush();
+  
+  printf("::WSR::CWriter::Loop() > email (address=%s) stored\n", C_STR(tTask->GetAddress()));
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CWriter::CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
+CWriter::CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
   ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
   m_Output(sOutput, ::std::ios::app),
   m_Emails(pEmails),
