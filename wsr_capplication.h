@@ -18,7 +18,6 @@
 #include "wsr_ctask.h"
 #include "wsr_cwriter.h"
 
-
 namespace WSR {
 
 DERIVE_ABSTRACT_EXCEPTION(::RESOURCE::EApplication, EApplication);

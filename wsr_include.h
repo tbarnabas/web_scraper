@@ -18,7 +18,6 @@
 
 #include "base/base.h"
 #include "datastructure/datastructure.h"
-#include "thread/thread.h"
 #include "resource/resource.h"
 
 #endif // #ifndef _WSR_INCLUDE

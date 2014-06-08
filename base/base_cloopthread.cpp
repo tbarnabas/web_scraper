@@ -26,9 +26,10 @@ void CLoopThread::Execute() {
 
   do {
     // loop
-    IGNORE_EXCEPTION(
+    {
       GUARD __tGuard(* this, IObject::WRITE, IObject::BLOCKED, true);
-      Loop());
+      IGNORE_EXCEPTION(Loop());
+    }
 
     // waiting for timeout or exit condition
     if (GetShutdown() == false) {

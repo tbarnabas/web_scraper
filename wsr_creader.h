@@ -18,12 +18,12 @@
 
 namespace WSR {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::EThread, EReader)
+DERIVE_EXCEPTION_BEGIN(::BASE::EThread, EReader)
   UNABLE_TO_OPEN
 DERIVE_EXCEPTION_END(EReader);
   
 class WSR_EXPORT_IMPORT CReader :
-  public ::THREAD::CThread {
+  public ::BASE::CThread {
 private:
   MEMBER(T_ULONG, Scrapers);
   MEMBER(::std::ifstream, Input);

@@ -18,15 +18,15 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EScraper);
+DERIVE_ABSTRACT_EXCEPTION(::BASE::ELoopThread, EScraper);
   
 class WSR_EXPORT_IMPORT CScraper :
-  public ::THREAD::CLoopThread {
+  public ::BASE::CLoopThread {
 private:
-  MEMBER__REFERENCE(::THREAD::CObject, Reader);
+  MEMBER__REFERENCE(::BASE::IObject, Reader);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Domains);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
-  MEMBER__REFERENCE(::THREAD::CObject, Writer);
+  MEMBER__REFERENCE(::BASE::IObject, Writer);
 
   //! copy constructor
   CScraper(const CScraper & tScraper);
@@ -39,7 +39,7 @@ protected:
 
 public:
   //! constructor
-  CScraper(::THREAD::CObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::THREAD::CObject * pWriter);
+  CScraper(::BASE::IObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * pWriter);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper

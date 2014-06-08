@@ -24,6 +24,7 @@
 namespace BASE {
 
 DERIVE_EXCEPTION_BEGIN(EMutex, ECondition)
+  SHUTTING_DOWN,
   TIMED_OUT
 DERIVE_EXCEPTION_END(ECondition);
 

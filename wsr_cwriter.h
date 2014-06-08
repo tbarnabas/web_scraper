@@ -18,12 +18,12 @@
 
 namespace WSR {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::ELoopThread, EWriter)
+DERIVE_EXCEPTION_BEGIN(::BASE::ELoopThread, EWriter)
   UNABLE_TO_OPEN
 DERIVE_EXCEPTION_END(EWriter);
   
 class WSR_EXPORT_IMPORT CWriter :
-  public ::THREAD::CLoopThread {
+  public ::BASE::CLoopThread {
 private:
   MEMBER(::std::ofstream, Output);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);

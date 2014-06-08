@@ -204,7 +204,6 @@ void CThread::Shutdown(T_BOOLEAN bImmediate) {
     GUARD __tGuard(* this, IObject::WRITE, IObject::BLOCKED, true);
     __destruct();
   }
-  CObject::Shutdown(bImmediate);
 } // Shutdown
 
 } // namespace THREAD

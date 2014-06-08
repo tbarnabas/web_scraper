@@ -12,7 +12,7 @@ namespace WSR {
 /////////////////////////////////////////////////////////////////////////////
 void CWriter::Loop() {
   if (m_Output.fail() == false) {
-    THREADGUARD __tGuard(m_Emails);
+    GUARD __tGuard(m_Emails);
     
     T_ULONG uSize = m_Emails->GetSize();
     
@@ -39,7 +39,7 @@ void CWriter::Loop() {
 
 /////////////////////////////////////////////////////////////////////////////
 CWriter::CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails) :
-  ::THREAD::CLoopThread(::BASE::CObject::BLOCKED),
+  ::BASE::CLoopThread(::BASE::IObject::BLOCKED),
   m_Output(sOutput, ::std::ios::app),
   m_Emails(pEmails) {
   if (m_Output.fail() == true) {

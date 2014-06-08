@@ -157,9 +157,6 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
   T_BOOLEAN bTimedOut = false;
   T_BOOLEAN bShutdown = false;
 
-  // acquire object
-  Acquire();
-
 #if (OS_FAMILY == OSF_WINDOWS)
 
   T_UINT uGeneration = 0;
@@ -246,10 +243,10 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
     if (pthread_cond_timedwait(&m_tCondition, &m_tMutex, &t) == ETIMEDOUT) {
       bTimedOut = true;
     }
-
-    // check interrupted state
-    bShutdown = GetShutdown();
   }
+
+  // check interrupted state
+  bShutdown = GetShutdown();
 
 #elif (PA_FAMILY == PAF_AVR)
 
@@ -257,13 +254,10 @@ void CCondition::Wait(const T_TIME & tTimeOut) {
 #error unsupported platform
 #endif
 
-  // release object
-  Release();
-
   if (bShutdown == true) {
     EXCEPTION(BASE, ::BASE::CCondition, Wait,
     MESSAGE("WARNING: shutting down .."));
-    THROW(ECondition, TIMED_OUT);
+    THROW(ECondition, SHUTTING_DOWN);
   }
 
   if (bTimedOut == true) {

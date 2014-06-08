@@ -109,10 +109,10 @@ void CMutex::Acquire(IObject::operations operation, IObject::modes mode) {
   EnterCriticalSection(&m_tCriticalSection);
     
 #elif ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
-    
+
   // lock mutex variable
   pthread_mutex_lock(&m_tMutex);
-    
+
 #elif (PA_FAMILY == PAF_AVR)
 
 #else

@@ -13,16 +13,16 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth) : 
-  ::RESOURCE::CApplication(::BASE::CObject::BLOCKED) {
+  ::RESOURCE::CApplication(::BASE::IObject::BLOCKED) {
   REFERENCE< ::WSR::CScraper> tScraper;
   
   // create a new queue
   m_Domains.Create(new ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >());
-  m_Domains->SetSynchronizator(REFERENCE< ::THREAD::CObject>().Create(new ::THREAD::CCondition()));
+  m_Domains->SetSynch(REFERENCE< ::BASE::IObject>().Create(new ::BASE::CCondition()));
   
   // create a new queue
   m_Emails.Create(new ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >());
-  m_Emails->SetSynchronizator(REFERENCE< ::THREAD::CObject>().Create(new ::THREAD::CCondition()));
+  m_Emails->SetSynch(REFERENCE< ::BASE::IObject>().Create(new ::BASE::CCondition()));
   
   // create a new reader
   m_Reader.Create(new ::WSR::CReader(uScrapers, sInput, uDepth, m_Domains));
@@ -40,7 +40,7 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   }
 */
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Domains.__ptr());
-  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Emails.__ptr());
+//  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Emails.__ptr());
 } // CApplication
 
 

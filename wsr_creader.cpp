@@ -11,17 +11,16 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CReader::Execute() {
-printf("--1--\n");
-  while ((::THREAD::CObject::GetInterrupted() == false) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
-printf("--2--\n");
-    THREADGUARD __tGuard(m_Domains);
+  while ((GetShutdown() == false) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
+printf("--0--\n");
+    GUARD __tGuard(m_Domains);
     T_ULONG uNumber = 0;
-printf("--2.5--\n");
+printf("--1--\n");
     // waiting for queue
-    while ((::THREAD::CObject::GetInterrupted() == false) && (m_Domains->GetSize() == m_Scrapers)) {
-printf("--3--\n");
+    while ((GetShutdown() == false) && (m_Domains->GetSize() == m_Scrapers)) {
+printf("--2--\n");
       m_Domains->Wait();
-printf("--3.5--\n");
+printf("--3--\n");
     }
 printf("--4--\n");
     
