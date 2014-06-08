@@ -30,6 +30,7 @@ SOURCES = \
   wsr_capplication.cpp \
   wsr_creader.cpp \
   wsr_ctask.cpp \
+  wsr_cwriter.cpp \
   \
   main.cpp
 

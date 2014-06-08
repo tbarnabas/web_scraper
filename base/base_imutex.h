@@ -20,6 +20,9 @@ namespace BASE {
 
 class BASE_EXPORT_IMPORT IMutex :
   virtual public IObject {
+public:
+  //! destructor
+  virtual ~IMutex() {}  
 }; // class BASE_EXPORT_IMPORT IMutex
 
 } // namespace BASE

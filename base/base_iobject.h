@@ -73,6 +73,9 @@ public:
   IMEMBER_GET(T_BOOLEAN, Immediate);
     
 public:
+  //! destructor
+  virtual ~IObject() {}  
+
   //! initialize
   virtual void Initialize() = 0;
   //! shutdown

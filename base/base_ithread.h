@@ -27,6 +27,10 @@ protected:
   virtual void Destruct() = 0;
   //! execute
   virtual void Execute() = 0;
+  
+public:
+  //! destructor
+  virtual ~IThread() {}  
 }; // class BASE_EXPORT_IMPORT IThread
 
 } // namespace BASE

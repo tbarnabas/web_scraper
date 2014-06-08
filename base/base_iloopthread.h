@@ -23,6 +23,10 @@ class BASE_EXPORT_IMPORT ILoopThread :
 protected:
   //! loop
   virtual void Loop() = 0;
+  
+public:
+  //! destructor
+  virtual ~ILoopThread() {}  
 }; // class BASE_EXPORT_IMPORT ILoopThread
 
 } // namespace BASE

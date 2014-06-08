@@ -19,7 +19,10 @@
 namespace BASE {
 
 class BASE_EXPORT_IMPORT ICondition :
-  virtual public IObject {
+  virtual public IObject { 
+public:
+  //! destructor
+  virtual ~ICondition() {}  
 }; // class BASE_EXPORT_IMPORT ICondition
 
 } // namespace BASE

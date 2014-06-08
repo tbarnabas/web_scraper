@@ -12,21 +12,17 @@ namespace WSR {
 /////////////////////////////////////////////////////////////////////////////
 void CReader::Execute() {
   while ((GetShutdown() == false) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
-printf("--0--\n");
-    GUARD __tGuard(m_Domains);
     T_ULONG uNumber = 0;
-printf("--1--\n");
+
+    GUARD __tGuard(m_Domains);
+
     // waiting for queue
     while ((GetShutdown() == false) && (m_Domains->GetSize() == m_Scrapers)) {
-printf("--2--\n");
       m_Domains->Wait();
-printf("--3--\n");
     }
-printf("--4--\n");
-    
+
     // enqueue domains
     while ((m_Domains->GetSize() < m_Scrapers) && (m_Input.eof() == false) && (m_Input.fail() == false)) {
-printf("--5--\n");
       ::std::string sDomain;
       
       // read domain from input
@@ -44,10 +40,9 @@ printf("--5--\n");
     if (uNumber > 0) {
       printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", m_Domains->GetSize());
     }
-  printf("--6--\n");
   }
-printf("--7--\n");
   
+  printf("::WSR::CReader::Loop() > all input domains processed\n");
 } // Execute
 
 
