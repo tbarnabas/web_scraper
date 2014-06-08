@@ -11,37 +11,31 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CWriter::Loop() {
-  if (m_Output.fail() == false) {
+  REFERENCE< ::WSR::CTask> tTask;
+  
+  m_EmailsConsumers->Acquire();
+
+  // dequeue email
+  {
     GUARD __tGuard(m_Emails);
-    
-    T_ULONG uSize = m_Emails->GetSize();
-    
-    // dequeue emails
-    if (uSize > 0) {
-      while (m_Emails->IsEmpty() == false) {
-        REFERENCE< ::WSR::CTask> tTask = m_Emails->Pop();
-        m_Output << tTask->GetAddress() << ::std::endl;
-      }
-
-      // flush output stream
-      m_Output.flush();
-      
-      // send broadcast signal to producers (optional)
-      m_Emails->Broadcast();
-
-      printf("::WSR::CWriter::Loop() > %d email(s) stored\n", uSize);
-    }
-  } else {
-    printf("::WSR::CWriter::Loop() FATAL ERROR > output error\n");
+    tTask = m_Emails->Pop();
   }
+
+  m_EmailsProducers->Release();
+
+  // write output
+  m_Output << tTask->GetAddress() << ::std::endl;
+  m_Output.flush();
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CWriter::CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails) :
-  ::BASE::CLoopThread(::BASE::IObject::BLOCKED),
+CWriter::CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
+  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
   m_Output(sOutput, ::std::ios::app),
-  m_Emails(pEmails) {
+  m_Emails(pEmails),
+  m_EmailsProducers(EmailsProducers),
+  m_EmailsConsumers(EmailsConsumers) {  
   if (m_Output.fail() == true) {
     EXCEPTION(WSR, ::WSR::CWriter, CWriter,
     MESSAGE("unable to open"));

@@ -27,6 +27,8 @@ class WSR_EXPORT_IMPORT CWriter :
 private:
   MEMBER(::std::ofstream, Output);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >, Emails);
+  MEMBER__REFERENCE(::BASE::IObject, EmailsProducers);
+  MEMBER__REFERENCE(::BASE::IObject, EmailsConsumers);
 
   //! copy constructor
   CWriter(const CWriter & tWriter);
@@ -39,7 +41,7 @@ protected:
 
 public:
   //! constructor
-  CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails);
+  CWriter(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
   //! destructor
   virtual ~CWriter();
 }; // class WSR_EXPORT_IMPORT CWriter

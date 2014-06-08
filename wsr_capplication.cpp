@@ -37,8 +37,8 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Reader.__ptr());
 
   // create a new writer
-//  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails));
-//  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
+  m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails, tEmailsProducers, tEmailsConsumers));
+  m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
 
   // create new scrapers
   for (T_ULONG i = 0; i < uScrapers; i++) {
