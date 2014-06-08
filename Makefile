@@ -29,6 +29,7 @@ SOURCES = \
   wsr.cpp \
   wsr_capplication.cpp \
   wsr_creader.cpp \
+  wsr_cscraper.cpp \
   wsr_ctask.cpp \
   wsr_cwriter.cpp \
   \

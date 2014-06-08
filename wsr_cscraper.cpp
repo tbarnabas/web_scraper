@@ -14,10 +14,10 @@ void CScraper::Loop() {
   REFERENCE< ::WSR::CTask> tTask;
   
   {
-    THREADGUARD __tGuard(m_Domains);
+    GUARD __tGuard(m_Domains);
     
     // waiting for task
-    while ((m_Domains->IsEmpty() == true) && (::THREAD::CObject::GetInterrupted() == false)) {
+    while ((m_Domains->IsEmpty() == true) && (GetShutdown() == false)) {
       m_Domains->Wait();
     }
     
@@ -29,11 +29,11 @@ void CScraper::Loop() {
   }
   
   if (tTask.IsValid() == true) {
-    printf("%d processing ...\n", ::THREAD::CThread::STATIC_GetCurrentThreadId());
+    printf("%d processing ...\n", GetThreadId());
   }
 
   {
-    THREADGUARD __tGuard(m_Emails);
+    GUARD __tGuard(m_Emails);
     
     // push task into queue
     m_Emails->Push(tTask);
@@ -45,8 +45,8 @@ void CScraper::Loop() {
 
 
 /////////////////////////////////////////////////////////////////////////////
-CScraper::CScraper(::THREAD::CObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::THREAD::CObject * pWriter) :
-  ::THREAD::CLoopThread(::BASE::CObject::NON_BLOCKED),
+CScraper::CScraper(::BASE::IObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * pWriter) :
+  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
   m_Reader(pReader),
   m_Domains(pDomains),
   m_Emails(pEmails),

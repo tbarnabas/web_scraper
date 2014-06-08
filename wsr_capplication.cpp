@@ -31,14 +31,14 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   // create a new writer
   m_Writer.Create(new ::WSR::CWriter(sOutput, m_Emails));
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
-/*  
+
   // create new scrapers
   for (T_ULONG i = 0; i < uScrapers; i++) {
     tScraper.Create(new ::WSR::CScraper(m_Reader, m_Domains.__ptr(), m_Emails, m_Writer.__ptr()));
-    tScraper->SetSynchronizator(m_Domains->GetSynchronizator());
+    tScraper->SetSynch(m_Domains->GetSynch());
     m_ObjectManager.Insert(m_ObjectManager.GetSize(), tScraper.__ptr());
   }
-*/
+
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Domains.__ptr());
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Emails.__ptr());
 } // CApplication
