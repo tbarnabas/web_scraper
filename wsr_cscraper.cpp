@@ -13,46 +13,39 @@ namespace WSR {
 void CScraper::Loop() {
   REFERENCE< ::WSR::CTask> tTask;
   
-    // waiting for task
-    while ((m_Domains->IsEmpty() == true) && (GetShutdown() == false)) {
-      m_Domains->Wait();
-    }
-    
-    // pop task from queue
+  m_DomainsConsumers->Acquire();
+
+  // dequeue domain
+  {
+    GUARD __tGuard(m_Domains);
     tTask = m_Domains->Pop();
   }
+
+  m_DomainsProducers->Release();
   
-  // send wakeup signal to producer
-  {
-    GUARD __tGuard(m_Reader);
-    m_Reader->Signal();
-  }
+  printf("%d processing ...\n", GetThreadId());
 
-  if (tTask.IsValid() == true) {
-    printf("%d processing ...\n", GetThreadId());
-  }
+  m_EmailsProducers->Acquire();
 
-  // push task into queue
+  // dequeue email
   {
     GUARD __tGuard(m_Emails);
     m_Emails->Push(tTask);
   }
-  
-  // send wakeup signal to consumer
-  {
-    GUARD __tGuard(m_Writer);
-    m_Writer->Signal();
-  }
+
+  m_EmailsConsumers->Release();
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CScraper::CScraper(::BASE::IObject * pReader, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * pWriter) :
+CScraper::CScraper(::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers) :
   ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
-  m_Reader(pReader),
   m_Domains(pDomains),
+  m_DomainsProducers(DomainsProducers),
+  m_DomainsConsumers(DomainsConsumers),
   m_Emails(pEmails),
-  m_Writer(pWriter) {
+  m_EmailsProducers(EmailsProducers),
+  m_EmailsConsumers(EmailsConsumers) {
 } // CScraper
 
 

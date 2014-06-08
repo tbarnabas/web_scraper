@@ -23,7 +23,9 @@
 
 namespace BASE {
 
-DERIVE_ABSTRACT_EXCEPTION(EObject, ESemaphore);
+DERIVE_EXCEPTION_BEGIN(EObject, ESemaphore)
+  SHUTTING_DOWN
+DERIVE_EXCEPTION_END(ESemaphore);
 
 class BASE_EXPORT_IMPORT CSemaphore :
   virtual public ISemaphore, 
@@ -49,7 +51,7 @@ protected:
 
 public:
   //! constructor
-  CSemaphore(T_ULONG uValue);
+  CSemaphore(T_ULONG uValue = 0);
   //! destructor
   virtual ~CSemaphore();
 
@@ -57,6 +59,9 @@ public:
   CSemaphore(const CSemaphore & tSemaphore);
   //! assignment operator
   CSemaphore & operator=(const CSemaphore & tSemaphore);
+
+  //! shutdown
+  virtual void Shutdown(T_BOOLEAN bImmediate = false);
 
   //! acquire
   virtual void Acquire(IObject::operations operation = IObject::WRITE, IObject::modes mode = IObject::BLOCKED);

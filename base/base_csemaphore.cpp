@@ -73,19 +73,31 @@ CSemaphore & CSemaphore::operator=(const CSemaphore & tSemaphore) {
 
 
 /////////////////////////////////////////////////////////////////////////////
+void CSemaphore::Shutdown(T_BOOLEAN bImmediate) {
+  CObject::Shutdown(bImmediate);
+  Release();
+} // Shutdown
+
+
+/////////////////////////////////////////////////////////////////////////////
 void CSemaphore::Acquire(IObject::operations operation, IObject::modes mode) {
     
 #if ((OS_FAMILY == OSF_LINUX) | (OS_FAMILY == OSF_UNIX))
     
   // lock semaphore variable
   sem_wait(&m_tSemaphore);
-    
+      
 #elif (PA_FAMILY == PAF_AVR)
 
 #else
 #error unsupported platform
 #endif
 
+  if (GetShutdown() == true) {
+    EXCEPTION(BASE, ::BASE::ESemaphore, Acquire,
+    MESSAGE("WARNING: shutting down .."));
+    THROW(ESemaphore, SHUTTING_DOWN);
+  }
 } // Acquire
 
 
