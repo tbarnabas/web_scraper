@@ -125,7 +125,7 @@ REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > CTextStream::Write() {
   while (::DATASTRUCTURE::CStream::IsEmpty() == false) {
     REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tElement = ::DATASTRUCTURE::CStream::Pop();
 
-    ::BASE::CArray<T_BYTE>::STATIC_Copy(tElement->GetElements(), tResult->GetElements() + uPosition, tElement->GetSize());
+    ::BASE::CArray<T_BYTE>::Copy(tElement->GetElements(), tResult->GetElements() + uPosition, tElement->GetSize());
     uPosition = uPosition + tElement->GetSize();    
   }
 

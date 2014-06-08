@@ -22,7 +22,7 @@ DERIVE_EXCEPTION_END(EObjectManager);
 
 template <class K>
 class CObjectManager :
-  public ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> > {
+  public ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> > {
 public:
   //! constructor
   CObjectManager();
@@ -68,14 +68,14 @@ CObjectManager<K>::~CObjectManager() {
 /////////////////////////////////////////////////////////////////////////////
 template <class K>
 CObjectManager<K>::CObjectManager(const CObjectManager<K> & tObjectManager) :
-  ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >(tObjectManager) {
+  ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >(tObjectManager) {
 } // CObjectManager
 
 
 /////////////////////////////////////////////////////////////////////////////
 template <class K>
 CObjectManager<K> & CObjectManager<K>::operator=(const CObjectManager<K> & tObjectManager) {
-  ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::operator=(tObjectManager);
+  ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::operator=(tObjectManager);
   return (* this);
 } // operator=
 
@@ -84,10 +84,10 @@ CObjectManager<K> & CObjectManager<K>::operator=(const CObjectManager<K> & tObje
 template <class K>
 void CObjectManager<K>::Initialize() {
   T_ULONG i = 0;
-  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::GetSize();
+  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::GetSize();
 
   for (i = 0; i < uSize; i++) {
-    REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i);
+    REFERENCE< ::BASE::IObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::SelectElement(i);
     tObject->Initialize();
   }
 } // Initialize
@@ -97,13 +97,11 @@ void CObjectManager<K>::Initialize() {
 template <class K>
 void CObjectManager<K>::Shutdown(T_BOOLEAN bImmediate) {
   T_ULONG i = 0;
-  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::GetSize();
+  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::GetSize();
 
   for (i = uSize; i > 0 ; i--) {
-    REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i - 1);
-printf("--%d object shutdown\n", i);
+    REFERENCE< ::BASE::IObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::SelectElement(i - 1);
     IGNORE_EXCEPTION(tObject->Shutdown(bImmediate));
-printf("--object shutdowned\n");
   }
 } // Shutdown
 
@@ -112,10 +110,10 @@ printf("--object shutdowned\n");
 template <class K>
 void CObjectManager<K>::Maintain() {
   T_ULONG i = 0;
-  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::GetSize();
+  T_ULONG uSize = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::GetSize();
 
   for (i = 0; i < uSize; i++) {
-    REFERENCE< ::THREAD::CObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::THREAD::CObject> >::SelectElement(i);
+    REFERENCE< ::BASE::IObject> tObject = ::DATASTRUCTURE::CMap<K, REFERENCE< ::BASE::IObject> >::SelectElement(i);
     IGNORE_EXCEPTION(tObject->Maintain());
   }
 } // Maintain

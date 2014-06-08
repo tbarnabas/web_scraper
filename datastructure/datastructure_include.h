@@ -17,7 +17,6 @@
 #include "datastructure_platform.h"
 
 #include "../base/base.h"
-#include "../thread/thread.h"
 
 #if (ENABLE_STL)
 #include <map>

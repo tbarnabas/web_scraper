@@ -19,10 +19,6 @@
 #include "resource_capplication.h"
 #include "resource_cobjectmanager.h"
 
-#if (DE_FAMILY == DEF_ARDUINO)
-#include "resource.cpp"
-#endif // #if (DE_FAMILY == DEF_ARDUINO)
-
 namespace RESOURCE {
 
 //! create module

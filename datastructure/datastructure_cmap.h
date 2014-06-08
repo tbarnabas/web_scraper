@@ -20,13 +20,13 @@
 
 namespace DATASTRUCTURE {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::EObject, EMap)
+DERIVE_EXCEPTION_BEGIN(::BASE::EObject, EMap)
   NOT_FOUND
 DERIVE_EXCEPTION_END(EMap);
 
 template <class K, class T>
 class CMap :
-  virtual public ::THREAD::CObject {
+  virtual public ::BASE::CObject {
 private:
   //! elements
   ::std::map<K, T> m_tElements;
@@ -96,7 +96,7 @@ CMap<K, T>::~CMap() {
 /////////////////////////////////////////////////////////////////////////////
 template <class K, class T>
 CMap<K, T>::CMap(const CMap<K, T> & tMap) :
-  ::THREAD::CObject(tMap),
+  ::BASE::CObject(tMap),
   m_tElements(tMap.m_tElements) {
 } // CMap
 
@@ -104,7 +104,7 @@ CMap<K, T>::CMap(const CMap<K, T> & tMap) :
 /////////////////////////////////////////////////////////////////////////////
 template <class K, class T>
 CMap<K, T> & CMap<K, T>::operator=(const CMap<K, T> & tMap) {
-  ::THREAD::CObject::operator=(tMap);
+  ::BASE::CObject::operator=(tMap);
   m_tElements = tMap.m_tElements;
   return (* this);
 } // operator=

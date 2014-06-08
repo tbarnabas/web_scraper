@@ -17,7 +17,6 @@ void Create() {
   if (GLOBAL_uCreated == 0) {
     ::BASE::Create();
     ::DATASTRUCTURE::Create();
-    ::THREAD::Create();
   }
   GLOBAL_uCreated = GLOBAL_uCreated + 1;
 } // Create
@@ -29,7 +28,6 @@ void Initialize() {
   if (GLOBAL_uInitialized == 0) {
     ::BASE::Initialize();
     ::DATASTRUCTURE::Initialize();
-    ::THREAD::Initialize();
   }
   GLOBAL_uInitialized = GLOBAL_uInitialized + 1;
 } // Initialize
@@ -39,7 +37,6 @@ void Initialize() {
 void Shutdown(T_BOOLEAN bImmediate) {
   GLOBAL_uInitialized = GLOBAL_uInitialized - 1;
   if (GLOBAL_uInitialized == 0) {
-    ::THREAD::Shutdown(bImmediate);
     ::DATASTRUCTURE::Shutdown(bImmediate);
     ::BASE::Shutdown(bImmediate);
   }
@@ -51,7 +48,6 @@ void Destroy() {
   Shutdown(true);
   GLOBAL_uCreated = GLOBAL_uCreated - 1;
   if (GLOBAL_uCreated == 0) {
-    ::THREAD::Destroy();
     ::DATASTRUCTURE::Destroy();
     ::BASE::Destroy();
   }

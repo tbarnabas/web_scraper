@@ -18,10 +18,10 @@
 
 namespace RESOURCE {
 
-DERIVE_ABSTRACT_EXCEPTION(::THREAD::ELoopThread, EApplication);
+DERIVE_ABSTRACT_EXCEPTION(::BASE::ELoopThread, EApplication);
 
 class RESOURCE_EXPORT_IMPORT CApplication :
-  public ::THREAD::CLoopThread {
+  public ::BASE::CLoopThread {
 private:
   //! copy constructor
   CApplication(const CApplication & tApplication);
@@ -37,7 +37,7 @@ protected:
 
 public:
   //! constructor
-  CApplication(::BASE::CObject::synchronizations synchronizations = ::BASE::CObject::NON_BLOCKED, const T_TIME & tTimeOut = T_TIME());
+  CApplication(::BASE::IObject::modes mode = ::BASE::IObject::NON_BLOCKED, const T_TIME & tTimeOut = T_TIME());
   //! destructor
   virtual ~CApplication();
 

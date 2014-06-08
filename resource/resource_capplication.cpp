@@ -11,17 +11,15 @@ namespace RESOURCE {
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Loop() {
-  THREADGUARD __tGuard(m_ObjectManager);
+  GUARD __tGuard(m_ObjectManager);
   m_ObjectManager.Maintain();
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CApplication::CApplication(::BASE::CObject::synchronizations synchronization, const T_TIME & tTimeOut) :
-  ::THREAD::CLoopThread(synchronization, tTimeOut) {
-  REFERENCE< ::THREAD::CObject> tSynchronizator;
-  tSynchronizator.Create(new ::THREAD::CMutex());
-  m_ObjectManager.SetSynchronizator(tSynchronizator);
+CApplication::CApplication(::BASE::IObject::modes mode, const T_TIME & tTimeOut) :
+  ::BASE::CLoopThread(mode, tTimeOut) {
+  m_ObjectManager.SetSynch(REFERENCE< ::BASE::IObject>().Create(new ::BASE::CMutex()));
 } // CApplication
 
 
@@ -33,20 +31,18 @@ CApplication::~CApplication() {
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Initialize() {
   {
-    THREADGUARD __tGuard(m_ObjectManager);
+    GUARD __tGuard(m_ObjectManager);
     m_ObjectManager.Initialize();
   }
-  ::THREAD::CLoopThread::Initialize();
+  ::BASE::CLoopThread::Initialize();
 } // Initialize
 
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Shutdown(T_BOOLEAN bImmediate) {
-printf("APP SHUTDOWN - 1\n");
-  ::THREAD::CLoopThread::Shutdown(bImmediate);
-printf("APP SHUTDOWN - 2\n");
+  ::BASE::CLoopThread::Shutdown(bImmediate);
   {
-    THREADGUARD __tGuard(m_ObjectManager);
+    GUARD __tGuard(m_ObjectManager);
     m_ObjectManager.Shutdown(bImmediate);
   }
 } // Shutdown
@@ -54,9 +50,9 @@ printf("APP SHUTDOWN - 2\n");
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Maintain() {
-  ::THREAD::CLoopThread::Maintain();
+  ::BASE::CLoopThread::Maintain();
   {
-    THREADGUARD __tGuard(m_ObjectManager);
+    GUARD __tGuard(m_ObjectManager);
     m_ObjectManager.Maintain();
   }
 } // Maintain

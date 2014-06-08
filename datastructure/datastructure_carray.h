@@ -16,12 +16,12 @@
 
 namespace DATASTRUCTURE {
 
-DERIVE_ABSTRACT_EXCEPTION(::THREAD::EObject, EArray)
+DERIVE_ABSTRACT_EXCEPTION(::BASE::EObject, EArray)
 
 template <class T, class L = T_ULONG>
 class CArray :
   public ::BASE::CArray<T, L>,
-  virtual public ::THREAD::CObject {
+  virtual public ::BASE::CObject {
 public:
   //! constructor
   CArray(const T * pElements = NULL, L uSize = 0);
@@ -71,7 +71,7 @@ CArray<T, L>::~CArray() {
 template <class T, class L>
 CArray<T, L>::CArray(const CArray<T, L> & tArray) :
   ::BASE::CArray<T, L>(tArray),
-  ::THREAD::CObject(tArray) {
+  ::BASE::CObject(tArray) {
 } // CArray
 
 
@@ -79,7 +79,7 @@ CArray<T, L>::CArray(const CArray<T, L> & tArray) :
 template <class T, class L>
 CArray<T, L> & CArray<T, L>::operator=(const CArray<T, L> & tArray) {
   ::BASE::CArray<T, L>::operator=(tArray);
-  ::THREAD::CObject::operator=(tArray);
+  ::BASE::CObject::operator=(tArray);
   return (* this);
 } // operator=
 

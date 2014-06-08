@@ -16,13 +16,13 @@
 
 namespace DATASTRUCTURE {
 
-DERIVE_EXCEPTION_BEGIN(::THREAD::EObject, EList)
+DERIVE_EXCEPTION_BEGIN(::BASE::EObject, EList)
   ELEMENT_NOT_FOUND
 DERIVE_EXCEPTION_END(EList);
 
 template <class T>
 class CList :
-  virtual public ::THREAD::CObject {
+  virtual public ::BASE::CObject {
 private:
   //! type definition for container
   struct TContainer {
@@ -212,7 +212,7 @@ CList<T>::~CList() {
 /////////////////////////////////////////////////////////////////////////////
 template <class T>
 CList<T>::CList(const CList<T> & tList) :
-  ::THREAD::CObject(tList) {
+  ::BASE::CObject(tList) {
   __construct(tList.m_Head);
 } // CList
 
@@ -221,7 +221,7 @@ CList<T>::CList(const CList<T> & tList) :
 template <class T>
 CList<T> & CList<T>::operator=(const CList<T> & tList) {
   __destruct();
-  ::THREAD::CObject::operator=(tList);
+  ::BASE::CObject::operator=(tList);
   __construct(tList.m_Head);
   return (* this);
 } // operator=
