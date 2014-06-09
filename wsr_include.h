@@ -17,6 +17,7 @@
 #include "wsr_platform.h"
 
 #include <curl/curl.h>
+#include <regex.h>
 
 #include "base/base.h"
 #include "datastructure/datastructure.h"
