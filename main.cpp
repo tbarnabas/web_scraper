@@ -26,7 +26,7 @@ __T_INT main(__T_INT iArgc, __T_CHAR * * pArgv) {
     // parse command line
     if (iArgc != 1) {
       if (T_STRING(pArgv[1]) == "-s") {
-	    T_ULONG uScrapers = 2;
+	    T_ULONG uScrapers = 1;
 		T_STRING sInput = "domains.txt";
 		T_STRING sOutput = "emails.txt";
 		T_ULONG uDepth = 1;

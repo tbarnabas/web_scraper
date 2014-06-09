@@ -18,8 +18,10 @@
 
 namespace WSR {
 
-DERIVE_ABSTRACT_EXCEPTION(::BASE::ELoopThread, EScraper);
-  
+DERIVE_EXCEPTION_BEGIN(::BASE::ELoopThread, EScraper)
+  UNABLE_TO_DOWNLOAD_HOME_PAGE
+DERIVE_EXCEPTION_END(EScraper)
+
 class WSR_EXPORT_IMPORT CScraper :
   public ::BASE::CLoopThread {
 private:
@@ -36,6 +38,8 @@ private:
   CScraper & operator=(const CScraper & tScraper);
 
 protected:
+  //! receive data
+  static size_t ReceiveData(void * pContents, size_t uSize, size_t uLength, void * pData);
   //! download home page
   REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > DownloadHomePage(const T_STRING & sAddress);
 

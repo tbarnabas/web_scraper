@@ -16,9 +16,10 @@
 
 #include "wsr_platform.h"
 
+#include <curl/curl.h>
+
 #include "base/base.h"
 #include "datastructure/datastructure.h"
-#include "ipc/ipc.h"
 #include "resource/resource.h"
 
 #endif // #ifndef _WSR_INCLUDE

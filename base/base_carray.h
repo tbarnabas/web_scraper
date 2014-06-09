@@ -266,7 +266,9 @@ T_BOOLEAN CArray<T, L>::Exists(const T & tElement) const {
 template <class T, class L>
 void CArray<T, L>::Append(const T * pElements, L uSize) {
   SetSize(m_uSize + uSize, true);
-  Copy(pElements, m_pElements + m_uSize - uSize, uSize);
+  if (pElements != NULL) {
+    Copy(pElements, m_pElements + m_uSize - uSize, uSize);
+  }
 } // CArray
 
 } // namespace BASE

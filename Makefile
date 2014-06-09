@@ -36,7 +36,7 @@ SOURCES = \
   \
   main.cpp
 
-LIBS += -lpthread
+LIBS += -lpthread -lcurl
 CLEAN += emails.txt
   
 include common.mk

@@ -18,6 +18,7 @@ void Create() {
     ::BASE::Create();
     ::DATASTRUCTURE::Create();
     ::RESOURCE::Create();
+    curl_global_init(CURL_GLOBAL_ALL);
     GLOBAL_bCreated = true;
   }
 } // Create
@@ -50,6 +51,7 @@ void Shutdown(T_BOOLEAN bImmediate) {
 void Destroy() {
   Shutdown(true);
   if (GLOBAL_bCreated == true)  {
+    curl_global_cleanup();
     ::RESOURCE::Destroy();
     ::DATASTRUCTURE::Destroy();
     ::BASE::Destroy();

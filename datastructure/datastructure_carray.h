@@ -20,8 +20,8 @@ DERIVE_ABSTRACT_EXCEPTION(::BASE::EObject, EArray)
 
 template <class T, class L = T_ULONG>
 class CArray :
-  public ::BASE::CArray<T, L>,
-  virtual public ::BASE::CObject {
+  virtual public ::BASE::CObject,
+  public ::BASE::CArray<T, L> {
 public:
   //! constructor
   CArray(const T * pElements = NULL, L uSize = 0);
@@ -70,8 +70,8 @@ CArray<T, L>::~CArray() {
 /////////////////////////////////////////////////////////////////////////////
 template <class T, class L>
 CArray<T, L>::CArray(const CArray<T, L> & tArray) :
-  ::BASE::CArray<T, L>(tArray),
-  ::BASE::CObject(tArray) {
+  ::BASE::CObject(tArray),
+  ::BASE::CArray<T, L>(tArray) {
 } // CArray
 
 

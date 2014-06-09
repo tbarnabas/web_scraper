@@ -22,24 +22,27 @@ namespace BASE {
 #define C_STR(s) ((const T_CHAR *)s)
 
 class BASE_EXPORT_IMPORT CString {
+public:
+  //! npos
+  static const T_ULONG npos;
+  
 private:
-  //! pointer to string
-  T_CHAR * m_pString;
+  MEMBER(T_CHAR *, String);
+  MEMBER_GET(T_ULONG, Length);
 
+  //! compare strings
+  static T_INT __strcmp(const T_CHAR * pLeft, const T_CHAR * pRight);
   //! copy string
   static void __strcpy(T_CHAR * pDestination, const T_CHAR * pSource, T_ULONG uLength);
   //! get length
   static T_ULONG __strlen(const T_CHAR * pString);
-  //! compare strings
-  static T_INT __strcmp(const T_CHAR * pLeft, const T_CHAR * pRight);
+  //! string position
+  static T_ULONG __strstr(const T_CHAR * pLeft, const T_CHAR * pRight);
 
   //! construct
   void __construct(const T_CHAR * pString, T_ULONG uLength);
   //! destruct
   void __destruct();
-
-public:
-  MEMBER_GET(T_ULONG, Length);
 
 public:
   //! constructor
@@ -131,7 +134,7 @@ public:
   //! substring
   CString SubString(T_ULONG uIndex, T_ULONG uLength = 0) const;
   //! find subtring at specified index
-  T_BOOLEAN Find(T_ULONG uIndex, const T_STRING & sValue) const;
+  T_ULONG Find(const T_STRING & sValue) const;
 }; // class BASE_EXPORT_IMPORT CString
 
 } // namespace BASE
