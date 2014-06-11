@@ -13,7 +13,7 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth) : 
-  ::RESOURCE::CApplication(::BASE::IObject::BLOCKED) {
+  ::RESOURCE::CApplication(::BASE::IObject::BLOCKED, T_TIME(1)) {
   REFERENCE< ::BASE::IObject> tDomainsProducers;
   REFERENCE< ::BASE::IObject> tDomainsConsumers;
   REFERENCE<CScraper> tScraper;
@@ -33,7 +33,7 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   tEmailsConsumers.Create(new ::BASE::CSemaphore(0));
   
   // create a new reader
-  m_Reader.Create(new CReader(sInput, uDepth, m_Domains, tDomainsProducers, tDomainsConsumers));
+  m_Reader.Create(new CReader(uScrapers, sInput, uDepth, m_Domains, tDomainsProducers, tDomainsConsumers));
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Reader.__ptr());
 
   // create a new writer
@@ -55,8 +55,12 @@ CApplication::~CApplication() {
 
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Run() {
-  printf("HELLO\n");
-  sleep(3);
+  GUARD __tGuard(CScraper::STATIC_tLock);
+  while ((CScraper::STATIC_uWorkingScrapers != 0) || (CScraper::STATIC_uTotalDownloadTry == 0)) {
+    CScraper::STATIC_tLock.Wait();
+  }
+
+  printf("WSR::CApplication::Run() > shutting down ..\n"); 
 } // Run
 
 } // namespace WSR

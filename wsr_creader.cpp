@@ -11,37 +11,39 @@ namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
 void CReader::Loop() {
-  if (m_Input.eof() == false) {  
-    T_ULONG uSize = 0;
+  REFERENCE<CTask> tTask;
   
-    // read domain from input
+  if (m_Input.eof() == false) {  
     ::std::string sDomain;
     ::std::getline(m_Input, sDomain);
   
     if (m_Input.fail() == false) {
-      m_DomainsProducers->Acquire();
-    
-      // enqueue domain
-      {
-        GUARD __tGuard(m_Domains); 
-        m_Domains->Push(REFERENCE<CTask>().Create(new ::WSR::CTask(sDomain.c_str(), m_Depth)));
-        uSize = m_Domains->GetSize();
-      }
-
-      m_DomainsConsumers->Release();
-
-      printf("::WSR::CReader::Loop() > %d domain(s) are waiting in the queue for processing ..\n", uSize);
+      tTask.Create(new ::WSR::CTask(sDomain.c_str(), m_Depth));
     }
   } else {
-    m_Shutdown = true;
-    printf("::WSR::CReader::Loop() > all input domains processed\n");
+    if (m_Scrapers > 0) {
+      tTask.Create(new ::WSR::CTask("QUIT", 0));
+      m_Scrapers = m_Scrapers - 1;
+    } else {
+      m_Shutdown = true;
+    }
+  }
+
+  if (tTask.IsValid() == true) {
+    m_DomainsProducers->Acquire();
+    {
+      GUARD __tGuard(m_Domains); 
+      m_Domains->Push(tTask);
+    }
+    m_DomainsConsumers->Release();
   }
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
-CReader::CReader(const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers) :
-  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
+CReader::CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers) :
+  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED, T_TIME(0)),
+  m_Scrapers(uScrapers),
   m_Input(sInput, ::std::ios::in),
   m_Depth(uDepth),
   m_Domains(pDomains),

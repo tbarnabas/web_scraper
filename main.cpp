@@ -59,7 +59,8 @@ __T_INT main(__T_INT iArgc, __T_CHAR * * pArgv) {
 
 		// shutdown application
 		tApplication.Shutdown(true);
-      } else if ((T_STRING(pArgv[1]) == "-h") || (T_STRING(pArgv[1]) == "--help")) {
+    printf("SHUTDOWN\n");
+    } else if ((T_STRING(pArgv[1]) == "-h") || (T_STRING(pArgv[1]) == "--help")) {
         printf(::STATIC_pUsage);
       }
     } else {

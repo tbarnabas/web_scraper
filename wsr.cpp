@@ -18,6 +18,7 @@ void Create() {
     ::BASE::Create();
     ::DATASTRUCTURE::Create();
     ::RESOURCE::Create();
+    CScraper::STATIC_tLock.SetSynch(REFERENCE< ::BASE::IObject>(new ::BASE::CCondition()));
     curl_global_init(CURL_GLOBAL_ALL);
     GLOBAL_bCreated = true;
   }

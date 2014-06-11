@@ -14,20 +14,21 @@ void CWriter::Loop() {
   REFERENCE<CTask> tTask;
   
   m_EmailsConsumers->Acquire();
-
-  // dequeue email
   {
     GUARD __tGuard(m_Emails);
     tTask = m_Emails->Pop();
   }
-
   m_EmailsProducers->Release();
 
-  // write output
-  m_Output << tTask->GetAddress() << ::std::endl;
-  m_Output.flush();
+  if (tTask->GetAddress() != "QUIT") {
+    m_Output << tTask->GetAddress() << ::std::endl;
+    m_Output.flush();
   
-  printf("::WSR::CWriter::Loop() > email (address=%s) stored\n", C_STR(tTask->GetAddress()));
+    printf("WSR::CWriter::Loop() > email (address=%s) stored\n", C_STR(tTask->GetAddress()));
+  } else {
+    m_Shutdown = true;
+    printf("WSR::CWriter::Loop() > shutting down\n");    
+  }
 } // Loop
 
 

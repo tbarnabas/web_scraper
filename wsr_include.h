@@ -18,6 +18,7 @@
 
 #include <curl/curl.h>
 #include <regex.h>
+#include <unistd.h>
 
 #include "base/base.h"
 #include "datastructure/datastructure.h"

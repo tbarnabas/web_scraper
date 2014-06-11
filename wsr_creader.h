@@ -25,6 +25,7 @@ DERIVE_EXCEPTION_END(EReader);
 class WSR_EXPORT_IMPORT CReader :
   public ::BASE::CLoopThread {
 private:
+  MEMBER(T_ULONG, Scrapers);
   MEMBER(::std::ifstream, Input);
   MEMBER(T_ULONG, Depth);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
@@ -42,7 +43,7 @@ protected:
 
 public:
   //! constructor
-  CReader(const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers);
+  CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers);
   //! destructor
   virtual ~CReader();
 }; // class WSR_EXPORT_IMPORT CReader

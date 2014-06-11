@@ -43,7 +43,7 @@ public:
   //! destructor
   virtual ~CApplication();
 
-    //! run
+  //! run
   virtual void Run();
 }; // class WSR_EXPORT_IMPORT CApplication
 
