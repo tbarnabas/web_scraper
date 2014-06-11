@@ -9,7 +9,21 @@
 
 namespace WSR {
 
-::DATASTRUCTURE::CMap<T_STRING, T_STRING> CScraper::STATIC_tLockedDomains;
+::DATASTRUCTURE::CMap<T_STRING, T_STRING> CScraper::STATIC_tLock;
+T_ULONG CScraper::STATIC_uWaitingScrapers = 0;
+T_ULONG CScraper::STATIC_uWorkingScrapers = 0;
+T_ULONG CScraper::STATIC_uDownloadingScrapers = 0;
+T_ULONG CScraper::STATIC_uRecognizingDomainScrapers = 0;
+T_ULONG CScraper::STATIC_uRecognizingEmailScrapers = 0;
+
+T_ULONG CScraper::STATIC_uTotalDownloadTry = 0;
+T_ULONG CScraper::STATIC_uAccessedHomePages = 0;
+T_ULONG CScraper::STATIC_uUnreachableHomePages = 0;
+
+T_ULONG CScraper::STATIC_uEnqueuedDomains = 0;
+T_ULONG CScraper::STATIC_uRecognizedDomains = 0;
+T_ULONG CScraper::STATIC_uRecognizedEmails = 0;
+
   
 /////////////////////////////////////////////////////////////////////////////
 size_t CScraper::ReceiveData(void * pContents, size_t uSize, size_t uLength, void * pData) {
@@ -29,26 +43,35 @@ size_t CScraper::ReceiveData(void * pContents, size_t uSize, size_t uLength, voi
 REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > CScraper::DownloadHomePage(const T_STRING & sAddress) {
   REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > tResult;
   T_STRING sDomain = sAddress;
-  
-  CURL * pCURL= NULL;
-  CURLcode tCURLResult;
-  
+   
   // create a new array
   tResult.Create(new ::DATASTRUCTURE::CArray<T_BYTE>());
-  
+
+  CURL * pCURL= NULL;
+  CURLcode tCURLResult;
+
   // initialize CURL session
   pCURL = curl_easy_init();
   if (pCURL != NULL) {
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uDownloadingScrapers = STATIC_uDownloadingScrapers + 1;
+    }
+    
     // set CURL options
     curl_easy_setopt(pCURL, CURLOPT_URL, C_STR(sDomain));
     curl_easy_setopt(pCURL, CURLOPT_FOLLOWLOCATION, 1L);
     curl_easy_setopt(pCURL, CURLOPT_USERAGENT, "wsr-agent/1.0");
+    curl_easy_setopt(pCURL, CURLOPT_AUTOREFERER, 1);
+    curl_easy_setopt(pCURL, CURLOPT_MAXREDIRS, 5);
+
+    curl_easy_setopt(pCURL, CURLOPT_TIMEOUT, 10);
     curl_easy_setopt(pCURL, CURLOPT_CONNECTTIMEOUT, 5);
 
     curl_easy_setopt(pCURL, CURLOPT_WRITEFUNCTION, ReceiveData);    
     curl_easy_setopt(pCURL, CURLOPT_WRITEDATA, (void *)tResult.__ptr());
  
-    printf("CScraper::DownloadHomePage() > connecting to server (address=%s)\n", C_STR(sAddress)); 
+//    printf("WSR::CScraper::DownloadHomePage() > connecting to server (address=%s)\n", C_STR(sAddress)); 
     
     // perform CURL operation
     tCURLResult = curl_easy_perform(pCURL);
@@ -56,11 +79,17 @@ REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > CScraper::DownloadHomePage(const T_
     // clean up CURL session
     curl_easy_cleanup(pCURL);
     
-    if (tCURLResult != CURLE_OK) {
-      printf("CScraper::DownloadHomePage() > ERROR: unable to connect (address=%s)\n", C_STR(sAddress)); 
-      tResult = NULL;
-    } else {
-      printf("CScraper::DownloadHomePage() > page (address=%s) downloaded\n", C_STR(sAddress));
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uDownloadingScrapers = STATIC_uDownloadingScrapers - 1;
+      STATIC_uTotalDownloadTry = STATIC_uTotalDownloadTry + 1;
+      if (tCURLResult == CURLE_OK) {
+        STATIC_uAccessedHomePages = STATIC_uAccessedHomePages + 1;
+        printf("WSR::CScraper::DownloadHomePage() > page (address=%s) downloaded\n", C_STR(sAddress));
+      } else {      
+        STATIC_uUnreachableHomePages = STATIC_uUnreachableHomePages + 1;
+        printf("WSR::CScraper::DownloadHomePage() > ERROR: unable to connect (address=%s, error=%d)\n", C_STR(sAddress), tCURLResult); 
+      }
     }
   }
 
@@ -105,6 +134,10 @@ void CScraper::RecognizeEmails(::DATASTRUCTURE::CArray<T_BYTE> * pPage, ::DATAST
   // collect result
   while (tEmails.IsEmpty() == false) {
     pEmails->Push(tEmails.RemoveElement(0));
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uRecognizedEmails = STATIC_uRecognizedEmails + 1;
+    }
   }
 } // RecognizeEmails
 
@@ -149,6 +182,10 @@ REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > CScraper::RecognizeDomai
   // collect result
   while (tDomains.IsEmpty() == false) {
     tResult->Push(tDomains.RemoveElement(0));
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uRecognizedDomains = STATIC_uRecognizedDomains + 1;
+    }
   }
   
   return (tResult);
@@ -169,22 +206,34 @@ REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > CScraper::Process(CTask 
   tPage = DownloadHomePage(pDomain->GetAddress());
 
   // recognize emails
-  if (tPage.IsValid() == true) {
+  if (tPage->IsValid() == true) {
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uRecognizingEmailScrapers = STATIC_uRecognizingEmailScrapers + 1;
+    }
     RecognizeEmails(tPage, tResult);
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uRecognizingEmailScrapers = STATIC_uRecognizingEmailScrapers - 1;
+    }
 
     // recognize domains
     if (pDomain->GetDepth() > 0) {
       REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > tDomains;
       
+      {
+        GUARD __tGuard(STATIC_tLock);
+        STATIC_uRecognizingDomainScrapers = STATIC_uRecognizingDomainScrapers + 1;
+      }
       tDomains = RecognizeDomains(tPage, pDomain->GetDepth() - 1);  
-
-      if (tDomains->GetSize() != 0) {
-        printf("CScraper::Loop() > %d domain(s) recognized\n", tDomains->GetSize());
+      {
+        GUARD __tGuard(STATIC_tLock);
+        STATIC_uRecognizingDomainScrapers = STATIC_uRecognizingDomainScrapers - 1;
       }
 
       // process domains
       while (tDomains->IsEmpty() == false) {
-        IGNORE_EXCEPTION(tResult = Process(tDomains->Pop(), tResult));
+        tResult = Process(tDomains->Pop(), tResult);
       }
     }
   }
@@ -198,6 +247,13 @@ void CScraper::Loop() {
   REFERENCE<CTask> tDomain;
   REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > tEmails;
   
+  {
+    GUARD __tGuard(STATIC_tLock);
+    STATIC_uWaitingScrapers = STATIC_uWaitingScrapers + 1;
+    STATIC_tLock.Broadcast();
+    printf("WSR::CScraper::Loop() > STATE: wait=%d, work=%d, down=%d rec_dom=%d, rec_email=%d | RESULT: in_dom=%d, rec_dom=%d, rec_email=%d | DOWNLOAD: total=%d, access=%d, error=%d\n", STATIC_uWaitingScrapers, STATIC_uWorkingScrapers, STATIC_uDownloadingScrapers, STATIC_uRecognizingDomainScrapers, STATIC_uRecognizingEmailScrapers, STATIC_uEnqueuedDomains, STATIC_uRecognizedDomains, STATIC_uRecognizedEmails, STATIC_uTotalDownloadTry, STATIC_uAccessedHomePages, STATIC_uUnreachableHomePages); 
+  }
+
   // dequeue domain
   m_DomainsConsumers->Acquire();
   {
@@ -206,23 +262,55 @@ void CScraper::Loop() {
   }
   m_DomainsProducers->Release();
 
-  // process domain
-  tEmails = Process(tDomain);
-  
-  if (tEmails.IsValid() == true) {
-    if (tEmails->GetSize() != 0) {
-      printf("CScraper::Loop() > %d email(s) recognized\n", tEmails->GetSize());
-    }
+  {
+    GUARD __tGuard(STATIC_tLock);
+    STATIC_uWaitingScrapers = STATIC_uWaitingScrapers - 1;
+    STATIC_uWorkingScrapers = STATIC_uWorkingScrapers + 1;
+    STATIC_tLock.Broadcast();
+    printf("WSR::CScraper::Loop() > STATE: wait=%d, work=%d, down=%d rec_dom=%d, rec_email=%d | RESULT: in_dom=%d, rec_dom=%d, rec_email=%d | DOWNLOAD: total=%d, access=%d, error=%d\n", STATIC_uWaitingScrapers, STATIC_uWorkingScrapers, STATIC_uDownloadingScrapers, STATIC_uRecognizingDomainScrapers, STATIC_uRecognizingEmailScrapers, STATIC_uEnqueuedDomains, STATIC_uRecognizedDomains, STATIC_uRecognizedEmails, STATIC_uTotalDownloadTry, STATIC_uAccessedHomePages, STATIC_uUnreachableHomePages); 
+  } 
 
-    // enqueue emails
-    while (tEmails->IsEmpty() == false) {
-      m_EmailsProducers->Acquire();
+  if (tDomain->GetAddress() != "QUIT") {
+    printf("WSR::CScraper::Loop() > processing domain (address=%s) ..\n", C_STR(tDomain->GetAddress())); 
+
+    {
+      GUARD __tGuard(STATIC_tLock);
+      STATIC_uEnqueuedDomains = STATIC_uEnqueuedDomains + 1;
+      STATIC_tLock.Broadcast();
+      printf("WSR::CScraper::Loop() > STATE: wait=%d, work=%d, down=%d rec_dom=%d, rec_email=%d | RESULT: in_dom=%d, rec_dom=%d, rec_email=%d | DOWNLOAD: total=%d, access=%d, error=%d\n", STATIC_uWaitingScrapers, STATIC_uWorkingScrapers, STATIC_uDownloadingScrapers, STATIC_uRecognizingDomainScrapers, STATIC_uRecognizingEmailScrapers, STATIC_uEnqueuedDomains, STATIC_uRecognizedDomains, STATIC_uRecognizedEmails, STATIC_uTotalDownloadTry, STATIC_uAccessedHomePages, STATIC_uUnreachableHomePages); 
+    } 
+
+    // process domain
+    IGNORE_EXCEPTION(tEmails = Process(tDomain));
+    
+    if (tEmails.IsValid() == true) {
+      while (tEmails->IsEmpty() == false) {
+        m_EmailsProducers->Acquire();
+        {
+          GUARD __tGuard(m_Emails);
+          m_Emails->Push(tEmails->Pop());
+        }
+        m_EmailsConsumers->Release();
+      }
+    }
+  } else {
+    m_Shutdown = true;
+    printf("WSR::CScraper::Loop() > shutting down\n");    
+  }
+
+  {
+    GUARD __tGuard(STATIC_tLock);
+    STATIC_uWorkingScrapers = STATIC_uWorkingScrapers - 1;
+    if ((m_Shutdown == true) && (STATIC_uWorkingScrapers == 0)) {
+       m_EmailsProducers->Acquire();
       {
         GUARD __tGuard(m_Emails);
-        m_Emails->Push(tEmails->Pop());
+        m_Emails->Push(tDomain);
       }
       m_EmailsConsumers->Release();
     }
+    STATIC_tLock.Broadcast();
+    printf("WSR::CScraper::Loop() > STATE: wait=%d, work=%d, down=%d rec_dom=%d, rec_email=%d | RESULT: in_dom=%d, rec_dom=%d, rec_email=%d | DOWNLOAD: total=%d, access=%d, error=%d\n", STATIC_uWaitingScrapers, STATIC_uWorkingScrapers, STATIC_uDownloadingScrapers, STATIC_uRecognizingDomainScrapers, STATIC_uRecognizingEmailScrapers, STATIC_uEnqueuedDomains, STATIC_uRecognizedDomains, STATIC_uRecognizedEmails, STATIC_uTotalDownloadTry, STATIC_uAccessedHomePages, STATIC_uUnreachableHomePages); 
   }
 } // Loop
 

@@ -25,8 +25,21 @@ DERIVE_EXCEPTION_END(EScraper)
 class WSR_EXPORT_IMPORT CScraper :
   public ::BASE::CLoopThread {
 public:
-  //! map of locked domains
-  static ::DATASTRUCTURE::CMap<T_STRING, T_STRING> STATIC_tLockedDomains;
+  //! statistic informations
+  static ::DATASTRUCTURE::CMap<T_STRING, T_STRING> STATIC_tLock;
+  static T_ULONG STATIC_uWaitingScrapers;
+  static T_ULONG STATIC_uWorkingScrapers;
+  static T_ULONG STATIC_uDownloadingScrapers;
+  static T_ULONG STATIC_uRecognizingDomainScrapers;
+  static T_ULONG STATIC_uRecognizingEmailScrapers;
+
+  static T_ULONG STATIC_uTotalDownloadTry;
+  static T_ULONG STATIC_uAccessedHomePages;
+  static T_ULONG STATIC_uUnreachableHomePages ;
+
+  static T_ULONG STATIC_uEnqueuedDomains;
+  static T_ULONG STATIC_uRecognizedDomains;
+  static T_ULONG STATIC_uRecognizedEmails;
   
 private:
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
