@@ -9,11 +9,12 @@
 
 static const char * STATIC_pUsage =
   "usage: wsr\n" \
-  "  [ -s | --scrape ] <scrapers> <domains> <emails> <depth> - scrape emails\n" \
+  "  [ -s | --scrape ] [ <scrapers> ] [ <domains> ] [ <emails> ] [ <depth> ] [ <sockets> ] - scrape emails\n" \
   "    <scrapers> : number of parallel downloader thread (default=1)\n" \
   "    <domains> : name of input file of domains (default=\"domains.txt\")\n" \
   "    <emails> : name of output file of emails (default=\"emails.txt\")\n" \
   "    <depth> : downloading depth (default=1)\n" \
+  "    <sockets> : maximum number of TIME_WAIT sockets (default=4096)\n" \
   "  [ -h | --help ] - display help\n";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -47,9 +48,13 @@ __T_INT main(__T_INT iArgc, __T_CHAR * * pArgv) {
 	    if (iArgc > 5) { 
 	      uDepth = atoi(pArgv[5]);
 	    }
+	    T_ULONG uTIMEWAITSockets = 4096;
+	    if (iArgc > 6) { 
+	      uTIMEWAITSockets = atoi(pArgv[6]);
+	    }
 		
 	    // create a new application
-	    ::WSR::CApplication tApplication(uScrapers, sInput, sOutput, uDepth);
+	    ::WSR::CApplication tApplication(uScrapers, sInput, sOutput, uDepth, uTIMEWAITSockets);
 		
 		// initialize application
 		tApplication.Initialize();

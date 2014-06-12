@@ -10,24 +10,33 @@
 namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
+void CWriter::FlushBufferedEmails() {
+  T_ULONG uSize = m_BufferedEmails.GetSize();
+  
+  while (m_BufferedEmails.IsEmpty() == false) {
+    m_Output << m_BufferedEmails.RemoveElement(0)->GetAddress() << ::std::endl;
+    m_Output.flush();
+  }
+
+  printf("WSR::CWriter::FlushBufferedEmails() > %d email(s) stored\n", uSize);
+} // FlushBufferedEmails
+
+
+/////////////////////////////////////////////////////////////////////////////
 void CWriter::Loop() {
   REFERENCE<CTask> tTask;
-  
-  m_EmailsConsumers->Acquire();
-  {
-    GUARD __tGuard(m_Emails);
-    tTask = m_Emails->Pop();
-  }
-  m_EmailsProducers->Release();
+
+  __DEQUEUE_EMAILS(tTask);
 
   if (tTask->GetAddress() != "QUIT") {
-    m_Output << tTask->GetAddress() << ::std::endl;
-    m_Output.flush();
-  
-    printf("WSR::CWriter::Loop() > email (address=%s) stored\n", C_STR(tTask->GetAddress()));
+    m_BufferedEmails.Insert(tTask->GetAddress(), tTask);
+    if (m_BufferedEmails.GetSize() > 1000) {
+      FlushBufferedEmails();
+    }
   } else {
     m_Shutdown = true;
-    printf("WSR::CWriter::Loop() > shutting down\n");    
+    FlushBufferedEmails();
+    printf("WSR::CWriter::Loop() > shutdown\n");
   }
 } // Loop
 

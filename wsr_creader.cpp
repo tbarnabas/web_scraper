@@ -26,16 +26,12 @@ void CReader::Loop() {
       m_Scrapers = m_Scrapers - 1;
     } else {
       m_Shutdown = true;
+      printf("WSR::CReader::Loop() > shutdown\n");
     }
   }
 
   if (tTask.IsValid() == true) {
-    m_DomainsProducers->Acquire();
-    {
-      GUARD __tGuard(m_Domains); 
-      m_Domains->Push(tTask);
-    }
-    m_DomainsConsumers->Release();
+    __ENQUEUE_DOMAINS(tTask);
   }
 } // Loop
 

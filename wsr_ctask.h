@@ -23,10 +23,11 @@ class WSR_EXPORT_IMPORT CTask :
 public:
   MEMBER_GET_SET(T_STRING, Address);
   MEMBER_GET_SET(T_ULONG, Depth);
+  MEMBER_GET_SET(T_ULONG, Download);
   
 public:
   //! constructor
-  CTask(const T_STRING & sAddress, T_ULONG uDepth);
+  CTask(const T_STRING & sAddress, T_ULONG uDepth, T_ULONG uDownload);
   //! destructor
   virtual ~CTask();
 

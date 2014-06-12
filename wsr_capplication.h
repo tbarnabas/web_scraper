@@ -39,7 +39,7 @@ public:
 
 public:
   //! constructor
-  CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth);
+  CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth, T_ULONG uTIMEWAITSockets);
   //! destructor
   virtual ~CApplication();
 

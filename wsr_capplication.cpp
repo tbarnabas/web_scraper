@@ -12,7 +12,7 @@
 namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
-CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth) : 
+CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_STRING & sOutput, T_ULONG uDepth, T_ULONG uTIMEWAITSockets) : 
   ::RESOURCE::CApplication(::BASE::IObject::BLOCKED, T_TIME(1)) {
   REFERENCE< ::BASE::IObject> tDomainsProducers;
   REFERENCE< ::BASE::IObject> tDomainsConsumers;
@@ -23,7 +23,7 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   // create a new queue
   m_Domains.Create(new ::DATASTRUCTURE::CQueue<REFERENCE< ::WSR::CTask> >());
   m_Domains->SetSynch(REFERENCE< ::BASE::IObject>().Create(new ::BASE::CMutex()));
-  tDomainsProducers.Create(new ::BASE::CSemaphore(uScrapers));
+  tDomainsProducers.Create(new ::BASE::CSemaphore(uScrapers * 2));
   tDomainsConsumers.Create(new ::BASE::CSemaphore(0));
   
   // create a new queue
@@ -41,8 +41,9 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
   m_ObjectManager.Insert(m_ObjectManager.GetSize(), m_Writer.__ptr());
 
   // create new scrapers
+  CScraper::STATIC_uRunningScrapers = uScrapers;
   for (T_ULONG i = 0; i < uScrapers; i++) {
-    tScraper.Create(new CScraper(m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
+    tScraper.Create(new CScraper(uTIMEWAITSockets, m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
     m_ObjectManager.Insert(m_ObjectManager.GetSize(), tScraper.__ptr());
   }
 } // CApplication
@@ -56,7 +57,7 @@ CApplication::~CApplication() {
 /////////////////////////////////////////////////////////////////////////////
 void CApplication::Run() {
   GUARD __tGuard(CScraper::STATIC_tLock);
-  while ((CScraper::STATIC_uWorkingScrapers != 0) || (CScraper::STATIC_uTotalDownloadTry == 0)) {
+  while (CScraper::STATIC_uRunningScrapers != 0) {
     CScraper::STATIC_tLock.Wait();
   }
 

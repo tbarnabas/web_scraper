@@ -30,12 +30,17 @@ private:
   MEMBER__REFERENCE(::BASE::IObject, EmailsProducers);
   MEMBER__REFERENCE(::BASE::IObject, EmailsConsumers);
 
+  typedef ::DATASTRUCTURE::CMap<T_STRING, REFERENCE<CTask> > TBufferedEmails;
+  MEMBER(TBufferedEmails, BufferedEmails);
+
   //! copy constructor
   CWriter(const CWriter & tWriter);
   //! assignment operator
   CWriter & operator=(const CWriter & tWriter);
-
+  
 protected:
+  //! flush buffered emails
+  void FlushBufferedEmails();
   //! loop
   virtual void Loop();
 

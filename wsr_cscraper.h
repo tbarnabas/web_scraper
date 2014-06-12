@@ -27,6 +27,7 @@ class WSR_EXPORT_IMPORT CScraper :
 public:
   //! statistic informations
   static ::DATASTRUCTURE::CMap<T_STRING, T_STRING> STATIC_tLock;
+  static T_ULONG STATIC_uRunningScrapers;
   static T_ULONG STATIC_uWaitingScrapers;
   static T_ULONG STATIC_uWorkingScrapers;
   static T_ULONG STATIC_uDownloadingScrapers;
@@ -40,8 +41,12 @@ public:
   static T_ULONG STATIC_uEnqueuedDomains;
   static T_ULONG STATIC_uRecognizedDomains;
   static T_ULONG STATIC_uRecognizedEmails;
+
+  static T_ULONG STATIC_uMaximumTIMEWAITSockets;
+  static T_ULONG STATIC_uCurrentTIMEWAITSockets;
   
 private:
+  MEMBER(T_ULONG, TIMEWAITSockets);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
   MEMBER__REFERENCE(::BASE::IObject, DomainsProducers);
   MEMBER__REFERENCE(::BASE::IObject, DomainsConsumers);
@@ -55,6 +60,8 @@ private:
   CScraper & operator=(const CScraper & tScraper);
 
 protected:
+  //! get TIME_WAIT socket number
+  T_ULONG GetTIMEWAITSocketNumber();
   //! receive data
   static size_t ReceiveData(void * pContents, size_t uSize, size_t uLength, void * pData);
   //! download home page
@@ -70,7 +77,7 @@ protected:
   
 public:
   //! constructor
-  CScraper(::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
+  CScraper(T_ULONG uTIMEWAITSockets, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper
