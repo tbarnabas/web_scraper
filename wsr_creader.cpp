@@ -26,19 +26,18 @@ void CReader::Loop() {
       m_Scrapers = m_Scrapers - 1;
     } else {
       m_Shutdown = true;
-      printf("WSR::CReader::Loop() > shutdown\n");
     }
   }
 
   if (tTask.IsValid() == true) {
-    __ENQUEUE_DOMAINS(tTask);
+    __WSR__ENQUEUE_DOMAINS(tTask);
   }
 } // Loop
 
 
 /////////////////////////////////////////////////////////////////////////////
 CReader::CReader(T_ULONG uScrapers, const T_STRING & sInput, T_ULONG uDepth, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers) :
-  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED, T_TIME(0)),
+  ::BASE::CLoopThread(::BASE::IObject::NON_BLOCKED),
   m_Scrapers(uScrapers),
   m_Input(sInput, ::std::ios::in),
   m_Depth(uDepth),

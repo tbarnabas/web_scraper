@@ -10,33 +10,16 @@
 namespace WSR {
 
 /////////////////////////////////////////////////////////////////////////////
-void CWriter::FlushBufferedEmails() {
-  T_ULONG uSize = m_BufferedEmails.GetSize();
-  
-  while (m_BufferedEmails.IsEmpty() == false) {
-    m_Output << m_BufferedEmails.RemoveElement(0)->GetAddress() << ::std::endl;
-    m_Output.flush();
-  }
-
-  printf("WSR::CWriter::FlushBufferedEmails() > %d email(s) stored\n", uSize);
-} // FlushBufferedEmails
-
-
-/////////////////////////////////////////////////////////////////////////////
 void CWriter::Loop() {
   REFERENCE<CTask> tTask;
 
-  __DEQUEUE_EMAILS(tTask);
+  __WSR__DEQUEUE_EMAILS(tTask);
 
   if (tTask->GetAddress() != "QUIT") {
-    m_BufferedEmails.Insert(tTask->GetAddress(), tTask);
-    if (m_BufferedEmails.GetSize() > 1000) {
-      FlushBufferedEmails();
-    }
+    m_Output << tTask->GetAddress() << ::std::endl;
+    m_Output.flush();
   } else {
     m_Shutdown = true;
-    FlushBufferedEmails();
-    printf("WSR::CWriter::Loop() > shutdown\n");
   }
 } // Loop
 

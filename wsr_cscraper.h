@@ -25,8 +25,10 @@ DERIVE_EXCEPTION_END(EScraper)
 class WSR_EXPORT_IMPORT CScraper :
   public ::BASE::CLoopThread {
 public:
-  //! statistic informations
+  //! context
   static ::DATASTRUCTURE::CMap<T_STRING, T_STRING> STATIC_tLock;
+  static ::DATASTRUCTURE::CMap<T_STRING, T_STRING> STATIC_tBufferedEmails;
+
   static T_ULONG STATIC_uRunningScrapers;
   static T_ULONG STATIC_uWaitingScrapers;
   static T_ULONG STATIC_uWorkingScrapers;
@@ -44,9 +46,9 @@ public:
 
   static T_ULONG STATIC_uMaximumTIMEWAITSockets;
   static T_ULONG STATIC_uCurrentTIMEWAITSockets;
+  static T_ULONG STATIC_uTIMEWAITSockets;
   
 private:
-  MEMBER(T_ULONG, TIMEWAITSockets);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
   MEMBER__REFERENCE(::BASE::IObject, DomainsProducers);
   MEMBER__REFERENCE(::BASE::IObject, DomainsConsumers);
@@ -77,7 +79,7 @@ protected:
   
 public:
   //! constructor
-  CScraper(T_ULONG uTIMEWAITSockets, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
+  CScraper(::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper

@@ -42,8 +42,9 @@ CApplication::CApplication(T_ULONG uScrapers, const T_STRING & sInput, const T_S
 
   // create new scrapers
   CScraper::STATIC_uRunningScrapers = uScrapers;
+  CScraper::STATIC_uTIMEWAITSockets = uTIMEWAITSockets;
   for (T_ULONG i = 0; i < uScrapers; i++) {
-    tScraper.Create(new CScraper(uTIMEWAITSockets, m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
+    tScraper.Create(new CScraper(m_Domains, tDomainsProducers, tDomainsConsumers, m_Emails, tEmailsProducers, tEmailsConsumers));
     m_ObjectManager.Insert(m_ObjectManager.GetSize(), tScraper.__ptr());
   }
 } // CApplication
@@ -59,6 +60,7 @@ void CApplication::Run() {
   GUARD __tGuard(CScraper::STATIC_tLock);
   while (CScraper::STATIC_uRunningScrapers != 0) {
     CScraper::STATIC_tLock.Wait();
+    __WSR__STATUS_LOG;
   }
 
   printf("WSR::CApplication::Run() > shutting down ..\n"); 
