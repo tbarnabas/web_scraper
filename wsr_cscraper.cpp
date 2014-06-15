@@ -154,8 +154,8 @@ void CScraper::RecognizeEmails(::DATASTRUCTURE::CArray<T_BYTE> * pPage, ::DATAST
           GUARD __tGuard(STATIC_tLock);
           if (STATIC_tBufferedEmails.Exists(pBuffer) == false) {
             STATIC_tBufferedEmails.Insert(pBuffer, pBuffer);
-            while (STATIC_tBufferedEmails.GetSize() > 50000) {
-              STATIC_tBufferedEmails.RemoveElement(0);
+            if (STATIC_tBufferedEmails.GetSize() > 50000) {
+              STATIC_tBufferedEmails.Clear();
             }
             pEmails->Push(REFERENCE<CTask>().Create(new CTask(pBuffer, 0)));
             STATIC_uRecognizedEmails = STATIC_uRecognizedEmails + 1;
@@ -174,6 +174,14 @@ void CScraper::RecognizeEmails(::DATASTRUCTURE::CArray<T_BYTE> * pPage, ::DATAST
 
 
 /////////////////////////////////////////////////////////////////////////////
+
+#define __CScraper__RecognizeDomains__REGEXP \
+  "http[s]*://" \
+  "[a-z|A-Z][a-z|A-Z|0-9|_|-]*(\\.[a-z|A-Z][a-z|A-Z|0-9|_|-]*)*" \
+  "(:[0-9]+){0,1}" \
+  "[/[a-z|A-Z|0-9|_|-]*]*" \
+  "\\?[a-z|A-Z|0-9|_|-|=|&]*"
+
 REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > CScraper::RecognizeDomains(::DATASTRUCTURE::CArray<T_BYTE> * pPage, T_ULONG uDepth) {
   REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > tResult;
   DATASTRUCTURE::CMap<T_STRING, REFERENCE<CTask> > tDomains;
@@ -184,7 +192,7 @@ REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > CScraper::RecognizeDomai
   regex_t tDomain;
   
   // compile regular expression
-  if (regcomp(&tDomain, "http[s]*://[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*[\\.[a-z][a-z0-9_-]*]*", REG_ICASE | REG_EXTENDED) == 0) { 
+  if (regcomp(&tDomain, __CScraper__RecognizeDomains__REGEXP, REG_ICASE | REG_EXTENDED) == 0) { 
     regmatch_t tMatch;
     
     T_BOOLEAN bMatch = true;
@@ -200,6 +208,7 @@ REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > CScraper::RecognizeDomai
         snprintf(pBuffer, uLength, "%s", pPage->GetElements() + uPosition + tMatch.rm_so);
         pBuffer[uLength] = '\0';
         tDomains.Insert(pBuffer, REFERENCE<CTask>().Create(new CTask(pBuffer, uDepth)));
+//        printf("WSR::CScraper::RecognizeDomains() > domain (address=%s) recognized\n", pBuffer);
         uPosition = uPosition + tMatch.rm_eo;
       } else {
         bMatch = false;
