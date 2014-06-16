@@ -18,11 +18,11 @@ void CReader::Loop() {
     ::std::getline(m_Input, sDomain);
   
     if (m_Input.fail() == false) {
-      tTask.Create(new ::WSR::CTask(sDomain.c_str(), m_Depth));
+      tTask.Create(new ::WSR::CTask(sDomain.c_str(), sDomain.c_str(), m_Depth));
     }
   } else {
     if (m_Scrapers > 0) {
-      tTask.Create(new ::WSR::CTask("QUIT", 0));
+      tTask.Create(new ::WSR::CTask("QUIT", "QUIT", 0));
       m_Scrapers = m_Scrapers - 1;
     } else {
       m_Shutdown = true;

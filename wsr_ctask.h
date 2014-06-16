@@ -21,12 +21,13 @@ DERIVE_ABSTRACT_EXCEPTION(::BASE::EObject, ETask);
 class WSR_EXPORT_IMPORT CTask :
   public ::BASE::CObject {
 public:
+  MEMBER_GET_SET(T_STRING, Domain);
   MEMBER_GET_SET(T_STRING, Address);
   MEMBER_GET_SET(T_ULONG, Depth);
   
 public:
   //! constructor
-  CTask(const T_STRING & sAddress, T_ULONG uDepth);
+  CTask(const T_STRING & sDomain, const T_STRING & sAddress, T_ULONG uDepth);
   //! destructor
   virtual ~CTask();
 

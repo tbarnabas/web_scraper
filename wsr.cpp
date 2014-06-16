@@ -19,6 +19,7 @@ void Create() {
     ::DATASTRUCTURE::Create();
     ::RESOURCE::Create();
     CScraper::STATIC_tLock.SetSynch(REFERENCE< ::BASE::IObject>(new ::BASE::CCondition()));
+    CScraper::STATIC_tBufferedEmails.SetSynch(REFERENCE< ::BASE::IObject>(new ::BASE::CMutex()));
     curl_global_init(CURL_GLOBAL_ALL);
     GLOBAL_bCreated = true;
   }

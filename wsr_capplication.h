@@ -16,7 +16,6 @@
 
 #include "wsr_creader.h"
 #include "wsr_ctask.h"
-#include "wsr_cwriter.h"
 
 namespace WSR {
 
@@ -32,10 +31,7 @@ private:
 
 public:
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Emails);
-
   MEMBER__REFERENCE(CReader, Reader);
-  MEMBER__REFERENCE(CWriter, Writer);
 
 public:
   //! constructor

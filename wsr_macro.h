@@ -39,20 +39,4 @@
   } \
   m_DomainsProducers->Release();
 
-#define __WSR__ENQUEUE_EMAILS(task) \
-  m_EmailsProducers->Acquire(); \
-  { \
-    GUARD __tGuard(m_Emails); \
-    m_Emails->Push(task); \
-  } \
-  m_EmailsConsumers->Release();
-
-#define __WSR__DEQUEUE_EMAILS(task) \
-  m_EmailsConsumers->Acquire(); \
-  { \
-    GUARD __tGuard(m_Emails); \
-    task = m_Emails->Pop(); \
-  } \
-  m_EmailsProducers->Release();
-
 #endif // #ifndef _WSR_MACRO

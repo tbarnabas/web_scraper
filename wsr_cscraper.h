@@ -19,7 +19,8 @@
 namespace WSR {
 
 DERIVE_EXCEPTION_BEGIN(::BASE::ELoopThread, EScraper)
-  UNABLE_TO_DOWNLOAD_HOME_PAGE
+  UNABLE_TO_DOWNLOAD_HOME_PAGE,
+  UNABLE_TO_OPEN_OUTPUT
 DERIVE_EXCEPTION_END(EScraper)
 
 class WSR_EXPORT_IMPORT CScraper :
@@ -49,12 +50,10 @@ public:
   static T_ULONG STATIC_uTIMEWAITSockets;
   
 private:
+  MEMBER(::std::ofstream, Output);
   MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Domains);
   MEMBER__REFERENCE(::BASE::IObject, DomainsProducers);
   MEMBER__REFERENCE(::BASE::IObject, DomainsConsumers);
-  MEMBER__REFERENCE(::DATASTRUCTURE::CQueue<REFERENCE<CTask> >, Emails);
-  MEMBER__REFERENCE(::BASE::IObject, EmailsProducers);
-  MEMBER__REFERENCE(::BASE::IObject, EmailsConsumers);
 
   //! copy constructor
   CScraper(const CScraper & tScraper);
@@ -62,6 +61,9 @@ private:
   CScraper & operator=(const CScraper & tScraper);
 
 protected:
+  //! store email task
+  void StoreEmail(const T_CHAR * pAddress);
+  
   //! get TIME_WAIT socket number
   T_ULONG GetTIMEWAITSocketNumber();
   //! receive data
@@ -69,17 +71,17 @@ protected:
   //! download home page
   REFERENCE< ::DATASTRUCTURE::CArray<T_BYTE> > DownloadHomePage(const T_STRING & sAddress);
   //! recognize emails
-  void RecognizeEmails(::DATASTRUCTURE::CArray<T_BYTE> * pPage, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails);
+  void RecognizeEmails(::DATASTRUCTURE::CArray<T_BYTE> * pPage);
   //! recognize domains
-  REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > RecognizeDomains(::DATASTRUCTURE::CArray<T_BYTE> * pPage, T_ULONG uDepth);
+  REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > RecognizeDomains(::DATASTRUCTURE::CArray<T_BYTE> * pPage, const T_STRING & sDomain, T_ULONG uDepth);
   //! process domain
-  REFERENCE< ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > > Process(CTask * pDomain, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails = NULL);
+  void Process(CTask * pDomain);
   //! loop
   virtual void Loop();
   
 public:
   //! constructor
-  CScraper(::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pEmails, ::BASE::IObject * EmailsProducers, ::BASE::IObject * EmailsConsumers);
+  CScraper(const T_STRING & sOutput, ::DATASTRUCTURE::CQueue<REFERENCE<CTask> > * pDomains, ::BASE::IObject * DomainsProducers, ::BASE::IObject * DomainsConsumers);
   //! destructor
   virtual ~CScraper();
 }; // class WSR_EXPORT_IMPORT CScraper
